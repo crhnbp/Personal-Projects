@@ -38,7 +38,6 @@ public class ArrayDeque<Item>{
         }
         nextFirst = start - 1;
         stuff = a;
-        nextLast = nextFirst + size + 1;
     }
 
     public boolean isEmpty(){
@@ -50,7 +49,10 @@ public class ArrayDeque<Item>{
     }
 
     public Item get(int index){
-        return stuff[(index+nextFirst)];
+        if (index == 0) {
+            return stuff[0];
+        }
+        return stuff[(index+nextFirst+1)% stuff.length];
     }
     
     public void addFirst(Item x){
