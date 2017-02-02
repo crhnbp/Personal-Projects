@@ -1,16 +1,19 @@
 public class LinkedListDeque<Item>{
-    public class Node{
-        public Item item;
+    public static void main(String[] args) {
+          int x = 0;
+    }
+    public class Node {
+        public Item stuff;
         public Node prev;
         public Node next;
         
         public Node(Item x, Node y, Node z){
-            item = x;
+            stuff = x;
             prev = y;
             next = z;
         }
         public Node(){
-            this.item = null;
+            this.stuff = null;
             this.prev = this;
             this.next = this;
         }
@@ -52,7 +55,7 @@ public class LinkedListDeque<Item>{
     public int size(){
         return size;
     }
-        public Item get(int index){
+    public Item get(int index){
         if (index < 0 || index >= size){
             return null;
         }
@@ -90,11 +93,11 @@ public class LinkedListDeque<Item>{
         sentinel.next = n.next;
         size -= 1;
         return n.stuff;
+        }
     }
-}
     
-    public Item removeLast(){
-        if (sentinel.prev == sentinel){
+    public Item removeLast() {
+        if (sentinel.prev == sentinel) {
             return null;
         } else {
         Node n = sentinel.prev;
@@ -102,12 +105,13 @@ public class LinkedListDeque<Item>{
         sentinel.prev = n.prev;
         size -= 1;
         return n.stuff;
+        }
     }
-}
-        private Item helper(int n, Node xd){
-        if(n == 0){
+    private Item helper(int n, Node xd) {
+        if (n == 0) {
             return xd.stuff;
-        } else {
+        }
         return helper(n-1, xd.next);
     }
 }
+
