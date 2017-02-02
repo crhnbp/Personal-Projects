@@ -50,7 +50,7 @@ public class ArrayDeque<Item>{
     }
 
     public Item get(int index){
-        return stuff[index+nextFirst];
+        return stuff[(index+nextFirst+1)% items.length];
     }
     
     public void addFirst(Item x){
@@ -143,7 +143,7 @@ public class ArrayDeque<Item>{
             nextLast -= 1;
         }
         stuff[nextLast] = null;
-        size += 1;
+        size -= 1;
         return hehe;
     }
     
