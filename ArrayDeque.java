@@ -50,6 +50,9 @@ public class ArrayDeque<Item>{
     }
 
     public Item get(int index){
+        if (index == 0) {
+            return 0
+        }
         return stuff[(index+nextFirst+1)% stuff.length];
     }
     
