@@ -48,7 +48,7 @@ public class ArrayDeque<Item> {
     bigger(items);
     items[nextFirst] = x;
     if (nextFirst == 0) {
-        nextFirst = items.length;
+        nextFirst = items.length - 1;
     }
     else {
     nextFirst = nextFirst - 1;
@@ -58,7 +58,7 @@ public class ArrayDeque<Item> {
     public void addLast(Item x) {
         bigger(items);
     items[nextLast] = x;
-    if (nextLast == items.length) {
+    if (nextLast == items.length - 1) {
         nextLast = 0;
     }
     else {
@@ -68,7 +68,7 @@ public class ArrayDeque<Item> {
 
     public Item removeFirst() {
     smaller(items);
-    if (nextFirst == items.length) {
+    if (nextFirst == items.length - 1) {
         nextFirst = 0;
     }
     else {
@@ -82,7 +82,7 @@ public class ArrayDeque<Item> {
     public Item removeLast() {
     smaller(items);
     if (nextLast == 0) {
-        nextLast = items.length;
+        nextLast = items.length - 1;
     }
     else {
         nextLast = nextLast - 1;
