@@ -1,9 +1,9 @@
 public class ArrayDeque<Item> {
-    private Item[] array;
     private int size;
     private Item item;
     private int nextLast;
     private int nextFirst;
+    private Item[] array;
 
     public ArrayDeque() {
         size = 0;
@@ -12,8 +12,8 @@ public class ArrayDeque<Item> {
         nextLast = size;
     }
 
-    private void resize(int capacity) {
-        Item[] a = (Item []) new Object[capacity];
+    private void resize(int cap) {
+        Item[] a = (Item []) new Object[cap];
         if (nextFirst < nextLast) {
             System.arraycopy(array, 0, a, 0, size);
         } else {
