@@ -17,7 +17,7 @@ public class ArrayDeque<Item> {
         System.arraycopy(items,0,newItems,0,items.length);
         return newItems;
     }
-    else {
+    if (bool == false) {
         Item[] newItems = (Item[]) new Object[items.length/2];
         System.arraycopy(items,0,newItems,0,items.length);
         return newItems;
