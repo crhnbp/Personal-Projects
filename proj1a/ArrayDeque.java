@@ -1,4 +1,5 @@
 public class ArrayDeque<Item> {
+
     private int size;
     private Item item;
     private int nextLast;
@@ -28,17 +29,17 @@ public class ArrayDeque<Item> {
 
 
     public void addFirst(Item x) {
-        if(size == 0){
+        if (size == 0) {
             size += 1;
             items[nextFirst] = x;
         } else {
-            if(size >= items.length) {
+            if (size >= items.length) {
                 resize(size * FACTOR);
                 nextFirst = items.length - 1;
             } else {
-                if(nextFirst == 0) {
+                if (nextFirst == 0) {
                     nextFirst = items.length - 1;
-                } else if(nextFirst <= nextLast) {
+                } else if (nextFirst <= nextLast) {
                     nextFirst -= 1;
                 } else {
                     nextFirst -= 1;
@@ -51,14 +52,14 @@ public class ArrayDeque<Item> {
 
 
     public void addLast(Item x) {
-        if(size >= items.length){
+        if(size >= items.length) {
             resize(size * FACTOR);
             nextLast += 1;
             items[nextLast] = x;
-        } else if(size == 0){
+        } else if (size == 0) {
             items[nextLast] = x;
         } else {
-            if(nextLast == items.length - 1){
+            if (nextLast == items.length - 1) {
                 nextLast = 0;
             } else {
                 nextLast += 1;
@@ -73,7 +74,7 @@ public class ArrayDeque<Item> {
         return size == 0;
     }
 
-    public int size(){
+    public int size() {
         return size;
     }
 
@@ -94,39 +95,39 @@ public class ArrayDeque<Item> {
     }
 
 
-    public Item removeFirst(){
+    public Item removeFirst() {
         if(size == 0){
             return null;
         }
-        Item Temp = items[nextFirst];
+        Item tempo = items[nextFirst];
         items[nextFirst] = null;
-        if((nextFirst < nextLast) || ((nextFirst > nextLast) && (nextFirst != items.length - 1))) {
+        if ((nextFirst < nextLast) || ((nextFirst > nextLast) && (nextFirst != items.length - 1))) {
             nextFirst += 1;
-        } else if(nextFirst == nextLast){
+        } else if (nextFirst == nextLast) {
             nextFirst = nextFirst;
-        } else if(nextFirst == items.length - 1) {
+        } else if (nextFirst == items.length - 1) {
             nextFirst = 0;
         }
         size -= 1;
-        return Temp;
+        return tempo;
     }
 
 
-    public Item removeLast(){
-        if(size == 0){
+    public Item removeLast() {
+        if (size == 0) {
             return null;
         }
-        Item Temp = items[nextLast];
+        Item tempo = items[nextLast];
         items[nextLast] = null;
-        if(size != 1){
-            if(nextLast == 0){
+        if (size != 1) {
+            if (nextLast == 0) {
                 nextLast = items.length - 1;
             } else {
                 nextLast -= 1;
             }
         }
         size -= 1;
-        return Temp;
+        return tempo;
     }
 
     public void printDeque() {
