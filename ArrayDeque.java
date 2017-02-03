@@ -1,153 +1,151 @@
-public class ArrayDeque<Item>{
-    private static double ratio = 0.25;
-    private static int HEHEXD = 2;
+public class ArrayDeque<Item> {
     private int size;
-    private int nextFirst;
+    private Item item;
     private int nextLast;
-    private Item[] stuff;
-    
-    
-    public ArrayDeque(){
+    private int nextFirst;
+    private Item[] items;
+    private static int FACTOR = 4;
+
+    public ArrayDeque() {
         size = 0;
-        nextFirst = 4;
-        nextLast = 5;
-        stuff = (Item[]) new Object[8];
-    }
-    
-    private void resize(int cap){
-        Item[] a = (Item[]) new Object[cap];
-        int start = (cap - size) / 2;
-        if (nextFirst < nextLast){
-            int i = nextFirst + 1;
-            while(i < nextLast){
-                a[start] = stuff[i];
-                i += 1;
-            }
-        }
-        else{
-            int i = nextFirst + 1; 
-            while(i < stuff.length){
-                a[start] = stuff[i];
-                i += 1;
-            }
-            int x = 0;
-            while(x < nextLast){
-                a[start + stuff.length - nextFirst] = stuff[x];
-                x += 1;
-            }
-        }
-        nextFirst = start - 1;
-        stuff = a;
+        nextFirst = 0;
+        items = (Item []) new Object[8];
+        nextLast = size;
     }
 
-    public boolean isEmpty(){
+    private void resize(int cap) {
+        Item[] a = (Item []) new Object[cap];
+        if (nextFirst < nextLast) {
+            System.arraycopy(items, 0, a, 0, size);
+        } else {
+            System.arraycopy(items, nextFirst, a, 0, size - nextFirst);
+            System.arraycopy(items, 0, a, size - nextFirst, nextFirst);
+        }
+        nextFirst = 0;
+        nextLast = size - 1;
+        items = a;
+    }
+
+
+    public void addFirst(Item x) {
+        if(size == 0){
+            size += 1;
+            items[nextFirst] = x;
+        } else {
+            if(size >= items.length) {
+                resize(size * FACTOR);
+                nextFirst = items.length - 1;
+            } else {
+                if(nextFirst == 0) {
+                    nextFirst = items.length - 1;
+                } else if(nextFirst <= nextLast) {
+                    nextFirst -= 1;
+                } else {
+                    nextFirst -= 1;
+                }
+            }
+            items[nextFirst] = x;
+            size += 1;
+        }
+    }
+
+
+    public void addLast(Item x) {
+        if(size >= items.length){
+            resize(size * FACTOR);
+            nextLast += 1;
+            items[nextLast] = x;
+        } else if(size == 0){
+            items[nextLast] = x;
+        } else {
+            if(nextLast == items.length - 1){
+                nextLast = 0;
+            } else {
+                nextLast += 1;
+            }
+            items[nextLast] = x;
+        }
+        size += 1;
+    }
+
+
+    public boolean isEmpty() {
         return size == 0;
     }
-    
+
     public int size(){
         return size;
     }
 
-    public Item get(int index){
-        if (index == 0) {
-            return stuff[0];
-        }
-        return stuff[(index+nextFirst+1)% stuff.length];
-    }
-    
-    public void addFirst(Item x){
-        size += 1;
-        if (size >= stuff.length - 2){
-            resize(size * HEHEXD);
-        }
-        stuff[nextFirst] = x;
-        if (nextFirst == 0){
-            nextFirst = stuff.length - 1;
+    public Item get(int index) {
+        if (size == 0) {
+            return null;
+        } else if (index == 0) {
+            return items[nextFirst];
+        } else if (nextLast < nextFirst) {
+            if (index < items.length - nextFirst) {
+                return items[index + nextFirst];
+            } else {
+                return items[index - (items.length - nextFirst)];
+            }
         } else {
-            nextFirst = nextFirst - 1;
-        }       
-    }
-    
-    public void addLast(Item x){
-        size += 1;
-        if (size >= stuff.length - 2){
-            resize(size * HEHEXD);
-        }
-        stuff[nextLast] = x;
-        if (nextLast == stuff.length - 1){
-            nextLast = 0;
-        } else {
-            nextLast += 1;
+            return items[index + nextFirst];
         }
     }
-    
-    
-    public void printDeque(){
-        if (nextFirst < nextLast){
-            int i = nextFirst + 1;
-            while (i < nextLast){
-                System.out.print(stuff[i]);
-                System.out.print(' ');
-                i += 1;
-            }
-        }
-        else{
-            int i = nextFirst + 1;
-            while(i < stuff.length){
-                System.out.print(stuff[i]);
-                System.out.print(' ');
-                i += 1;
-            }
-            int j = 0;
-            while(j < nextLast){
-                System.out.print(stuff[j]);
-                System.out.print(' ');
-                j += 1;
-            }
-        }
-        System.out.println();
-    }
-    
+
+
     public Item removeFirst(){
-        if (size == 0){
+        if(size == 0){
             return null;
         }
-        if (stuff.length >= 16 && (double)size / stuff.length <= ratio){
-            resize(size * HEHEXD);
-        }
-        Item hehe;
-        if (nextFirst == stuff.length - 1){
-            hehe = stuff[0];
-            nextFirst = 0;  
-        } else {
-            hehe = stuff[nextFirst + 1];
+        Item Temp = items[nextFirst];
+        items[nextFirst] = null;
+        if((nextFirst < nextLast) || ((nextFirst > nextLast) && (nextFirst != items.length - 1))) {
             nextFirst += 1;
+        } else if(nextFirst == nextLast){
+            nextFirst = nextFirst;
+        } else if(nextFirst == items.length - 1) {
+            nextFirst = 0;
         }
-        stuff[nextFirst] = null;
         size -= 1;
-        return hehe;
+        return Temp;
     }
-    
+
+
     public Item removeLast(){
-        if (size == 0){
+        if(size == 0){
             return null;
         }
-        if (stuff.length >= 16 && (double)size / stuff.length <= ratio){
-            resize(size * HEHEXD);
+        Item Temp = items[nextLast];
+        items[nextLast] = null;
+        if(size != 1){
+            if(nextLast == 0){
+                nextLast = items.length - 1;
+            } else {
+                nextLast -= 1;
+            }
         }
-        Item hehe;
-        if (nextLast == 0){
-            hehe = stuff[stuff.length - 1];
-            nextLast = stuff.length - 1;
-        }
-        else{
-            hehe = stuff[nextLast - 1];
-            nextLast -= 1;
-        }
-        stuff[nextLast] = null;
         size -= 1;
-        return hehe;
+        return Temp;
     }
-    
-    
+
+    public void printDeque() {
+        if (size == 0) {
+            return;
+        }
+        if (nextLast < nextFirst) {
+            for (int i = nextFirst; i <= items.length - 1; i++) {
+                System.out.print(items[i] + " ");
+            }
+            for (int j = 0; j <= nextLast; j++) {
+                System.out.print(items[j] + " ");
+            }
+        } else {
+            for (int k = nextFirst; k <= nextLast; k++) {
+                System.out.print(items[k] + " ");
+            }
+        }
+    }
 }
+
+    
