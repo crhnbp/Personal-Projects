@@ -31,23 +31,23 @@ public class ArrayDeque<Item> {
         if(size == 0){
             size += 1;
             items[nextFirst] = x;
-        }
+        } else {
             if(size >= items.length) {
                 resize(size * FACTOR);
                 nextFirst = items.length - 1;
-            }
+            } else {
                 if(nextFirst == 0) {
                     nextFirst = items.length - 1;
-                } if(nextFirst <= nextLast) {
+                } else if(nextFirst <= nextLast) {
                     nextFirst -= 1;
                 } else {
                     nextFirst -= 1;
                 }
-            
+            }
             items[nextFirst] = x;
             size += 1;
         }
-    
+    }
 
 
     public void addLast(Item x) {
@@ -55,14 +55,16 @@ public class ArrayDeque<Item> {
             resize(size * FACTOR);
             nextLast += 1;
             items[nextLast] = x;
-        } if(size == 0){
+        } else if(size == 0){
             items[nextLast] = x;
-        } if(nextLast == items.length - 1){
+        } else {
+            if(nextLast == items.length - 1){
                 nextLast = 0;
             } else {
                 nextLast += 1;
             }
             items[nextLast] = x;
+        }
         size += 1;
     }
 
@@ -78,9 +80,9 @@ public class ArrayDeque<Item> {
     public Item get(int index) {
         if (size == 0) {
             return null;
-        } if (index == 0) {
+        } else if (index == 0) {
             return items[nextFirst];
-        } if (nextLast < nextFirst) {
+        } else if (nextLast < nextFirst) {
             if (index < items.length - nextFirst) {
                 return items[index + nextFirst];
             } else {
@@ -145,3 +147,5 @@ public class ArrayDeque<Item> {
         }
     }
 }
+
+    
