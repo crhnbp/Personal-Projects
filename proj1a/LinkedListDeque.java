@@ -1,8 +1,6 @@
 public class LinkedListDeque<Item> {
-    public static void main(String[] args) {
-        int x = 0;
-    }
-    public class Node {
+
+    private class Node {
         private Item stuff;
         private Node prev;
         private Node next;
@@ -25,14 +23,6 @@ public class LinkedListDeque<Item> {
     public LinkedListDeque() {
         sentinel = new Node();
         size = 0;
-    }
-    
-    public LinkedListDeque(Item stuff) {
-        sentinel = new Node();
-        size = 1;
-        Node n = new Node(stuff, sentinel, sentinel);
-        sentinel.prev = n;
-        sentinel.next = n;
     }
     
     public void addFirst(Item stuff) {
