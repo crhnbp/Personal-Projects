@@ -39,10 +39,8 @@ public class ArrayDeque<Item> {
             } else {
                 if (nextFirst == 0) {
                     nextFirst = items.length - 1;
-                } else {
-                if (nextFirst <= nextLast) {
+                } else if (nextFirst <= nextLast) {
                     nextFirst -= 1;
-                }
                 } else {
                     nextFirst -= 1;
                 }
@@ -58,10 +56,8 @@ public class ArrayDeque<Item> {
             resize(size * FACTOR);
             nextLast += 1;
             items[nextLast] = x;
-        } else {
-        if (size == 0) {
+        } else if (size == 0) {
             items[nextLast] = x;
-        }
         } else {
             if (nextLast == items.length - 1) {
                 nextLast = 0;
@@ -85,18 +81,14 @@ public class ArrayDeque<Item> {
     public Item get(int index) {
         if (size == 0) {
             return null;
-        } else {
-            if (index == 0) {
-                return items[nextFirst];
-        }
-        } else {
-            if (nextLast < nextFirst) {
-                if (index < items.length - nextFirst) {
-                    return items[index + nextFirst];
-            }   else {
-                    return items[index - (items.length - nextFirst)];
+        } else if (index == 0) {
+            return items[nextFirst];
+        } else if (nextLast < nextFirst) {
+            if (index < items.length - nextFirst) {
+                return items[index + nextFirst];
+            } else {
+                return items[index - (items.length - nextFirst)];
             }
-        }
         } else {
             return items[index + nextFirst];
         }
@@ -111,15 +103,11 @@ public class ArrayDeque<Item> {
         items[nextFirst] = null;
         if ((nextFirst < nextLast) || ((nextFirst > nextLast) && (nextFirst != items.length - 1))) {
             nextFirst += 1;
-        } else {
-            if (nextFirst == nextLast) {
-                nextFirst = nextFirst;
+        } else if (nextFirst == nextLast) {
+            nextFirst = nextFirst;
+        } else if (nextFirst == items.length - 1) {
+            nextFirst = 0;
         }
-        } else {
-            if (nextFirst == items.length - 1) {
-                nextFirst = 0;
-        }
-    }
         size -= 1;
         return tempo;
     }
@@ -159,8 +147,8 @@ public class ArrayDeque<Item> {
             }
         }
     }
-}
 
+}
 
 
     
