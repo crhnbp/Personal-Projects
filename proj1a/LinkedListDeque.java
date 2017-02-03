@@ -1,18 +1,18 @@
-public class LinkedListDeque<Item>{
+public class LinkedListDeque<Item> {
     public static void main(String[] args) {
-          int x = 0;
+        int x = 0;
     }
     public class Node {
-        public Item stuff;
-        public Node prev;
-        public Node next;
+        private Item stuff;
+        private Node prev;
+        private Node next;
         
-        public Node(Item x, Node y, Node z){
+        public Node(Item x, Node y, Node z) {
             stuff = x;
             prev = y;
             next = z;
         }
-        public Node(){
+        public Node() {
             this.stuff = null;
             this.prev = this;
             this.next = this;
@@ -22,12 +22,12 @@ public class LinkedListDeque<Item>{
     private Node sentinel;
     private int size;
     
-    public LinkedListDeque(){
+    public LinkedListDeque() {
         sentinel = new Node();
         size = 0;
     }
     
-    public LinkedListDeque(Item stuff){
+    public LinkedListDeque(Item stuff) {
         sentinel = new Node();
         size = 1;
         Node n = new Node(stuff, sentinel, sentinel);
@@ -35,48 +35,48 @@ public class LinkedListDeque<Item>{
         sentinel.next = n;
     }
     
-    public void addFirst(Item stuff){
+    public void addFirst(Item stuff) {
         size += 1;
         Node n = new Node(stuff, sentinel, sentinel.next);
         sentinel.next.prev = n;
         sentinel.next = n;
     }
     
-    public void addLast(Item stuff){
+    public void addLast(Item stuff) {
         size += 1;
         Node n = new Node(stuff, sentinel.prev, sentinel);
         sentinel.prev.next = n;
         sentinel.prev = n;
     }
-        public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
     
-    public int size(){
+    public int size() {
         return size;
     }
-    public Item get(int index){
-        if (index < 0 || index >= size){
+    public Item get(int index) {
+        if (index < 0 || index >= size) {
             return null;
         }
         Node xd = sentinel.next;
-        for (int i = 0; i < index; i++){
+        for (int i = 0; i < index; i++) {
             xd = xd.next;
         }
         return xd.stuff;
     }
     
-    public Item getRecursive(int index){
-        if (index >= size || index < 0){
+    public Item getRecursive(int index) {
+        if (index >= size || index < 0) {
             return null;
         }
         return helper(index, sentinel.next);
     }
 
     
-    public void printDeque(){
+    public void printDeque() {
         Node xd = sentinel;
-        while(xd.next != sentinel){
+        while (xd.next != sentinel) {
             System.out.print(xd.stuff);
             System.out.print(' ');
             xd = xd.next;
@@ -84,15 +84,15 @@ public class LinkedListDeque<Item>{
         System.out.println();
     }
     
-    public Item removeFirst(){
-        if (sentinel.next == sentinel){
+    public Item removeFirst() {
+        if (sentinel.next == sentinel) {
             return null;
         } else {
-        Node n = sentinel.next;
-        n.next.prev = sentinel;
-        sentinel.next = n.next;
-        size -= 1;
-        return n.stuff;
+            Node n = sentinel.next;
+            n.next.prev = sentinel;
+            sentinel.next = n.next;
+            size -= 1;
+            return n.stuff;
         }
     }
     
@@ -100,11 +100,11 @@ public class LinkedListDeque<Item>{
         if (sentinel.prev == sentinel) {
             return null;
         } else {
-        Node n = sentinel.prev;
-        n.prev.next = sentinel;
-        sentinel.prev = n.prev;
-        size -= 1;
-        return n.stuff;
+            Node n = sentinel.prev;
+            n.prev.next = sentinel;
+            sentinel.prev = n.prev;
+            size -= 1;
+            return n.stuff;
         }
     }
     private Item helper(int n, Node xd) {
