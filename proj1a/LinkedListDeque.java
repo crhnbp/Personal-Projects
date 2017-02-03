@@ -5,12 +5,12 @@ public class LinkedListDeque<Item> {
         private Node prev;
         private Node next;
         
-        public Node(Item x, Node y, Node z) {
+        private Node(Item x, Node y, Node z) {
             stuff = x;
             prev = y;
             next = z;
         }
-        public Node() {
+        private Node() {
             this.stuff = null;
             this.prev = this;
             this.next = this;
@@ -101,7 +101,7 @@ public class LinkedListDeque<Item> {
         if (n == 0) {
             return xd.stuff;
         }
-        return helper(n-1, xd.next);
+        return helper(n - 1, xd.next);
     }
 }
 

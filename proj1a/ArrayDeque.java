@@ -52,7 +52,7 @@ public class ArrayDeque<Item> {
 
 
     public void addLast(Item x) {
-        if(size >= items.length) {
+        if (size >= items.length) {
             resize(size * FACTOR);
             nextLast += 1;
             items[nextLast] = x;
@@ -96,7 +96,7 @@ public class ArrayDeque<Item> {
 
 
     public Item removeFirst() {
-        if(size == 0){
+        if (size == 0) {
             return null;
         }
         Item tempo = items[nextFirst];
@@ -148,5 +148,7 @@ public class ArrayDeque<Item> {
         }
     }
 }
+
+
 
     
