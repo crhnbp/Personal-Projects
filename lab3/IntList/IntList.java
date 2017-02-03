@@ -72,24 +72,6 @@ public class IntList {
     }
 
     /** DO NOT MODIFY ANYTHING ABOVE THIS LINE! */
-    public static IntList reverse(IntList A) {
-        if (A == null) {
-            return null;
-        }
-        if (A.next == null) {
-            return A;
-        }
-        IntList B = A.next;
-        IntList hehe = null;
-        while (B != null) {
-            A.next = hehe;
-            hehe = A;
-            A = B;
-            B = B.next;
-        }
-        A.next = hehe;
-        return A;
-    }
 
 
     /**
@@ -98,27 +80,15 @@ public class IntList {
      */
 
     public static IntList dcatenate(IntList A, IntList B) {
-<<<<<<< HEAD
-        int i;
-        while (B!=null)
-        {
-            IntList xd = A;
-            if (A == null){
-                return B;
-            }
-            else{
-                while (A.rest != null)
-                {
-                    A = A.rest;
-                }
-                A.rest = B;
-            }
-            return xd;
+        IntList temp = A;
+        if (A==null) {
+            return B;
         }
-=======
-        //TODO:  fill in method
->>>>>>> 87d29d36c2f049ce4aa381a7f51073796e7de116
-        return null;
+        while (temp.rest != null) {
+            temp = temp.rest;
+        }
+        temp.rest = B;
+        return A;
     }
 
     /**
@@ -126,27 +96,18 @@ public class IntList {
      * * elements of B.  May NOT modify items of A.  Use 'new'.
      */
     public static IntList catenate(IntList A, IntList B) {
-<<<<<<< HEAD
-        IntList dum = new IntList(-1,null);
-        IntList xd = dum;
-        IntList C = null;
-        while(A != null)
-        {
-            xd.rest = new IntList(A.first,null);
-            xd = xd.rest;
-            A = A.rest;
+        if (A == null) {
+            return B;
         }
-        while(B != null)
-        {
-            xd.rest = new IntList(B.first,null);
-            xd = xd.rest;
-            B = B.rest;
+        if (A.rest == null) {
+            return new IntList(A.first, B);
+
         }
-        return dum.rest;
-=======
-        //TODO:  fill in method
-        return null;
->>>>>>> 87d29d36c2f049ce4aa381a7f51073796e7de116
+        else {
+            return new IntList(A.first, catenate(A.rest, B));
+        }
+
+
     }
 
 
@@ -267,5 +228,19 @@ public class IntList {
         out.format(")");
         return out.toString();
     }
-}
 
+    public static IntList reverse(IntList A)   {
+        IntList newFront = null;
+        IntList toRev = A;
+        while (toRev != null) {
+            IntList nextNode = toRev.rest;
+            toRev.rest = newFront;
+            newFront = toRev;
+            toRev = nextNode;
+
+        }
+        A = newFront;
+        return A;
+    }
+
+}
