@@ -99,6 +99,9 @@ public class ArrayDeque<Item> {
         if (size == 0) {
             return null;
         }
+        if (size < (items.length / 2)) {
+            resize(size * 0.5);
+        }
         Item tempo = items[nextFirst];
         items[nextFirst] = null;
         if ((nextFirst < nextLast) || ((nextFirst > nextLast) && (nextFirst != items.length - 1))) {
@@ -116,6 +119,9 @@ public class ArrayDeque<Item> {
     public Item removeLast() {
         if (size == 0) {
             return null;
+        }
+        if (size < (items.length / 2)) {
+            resize(size * 0.5);
         }
         Item tempo = items[nextLast];
         items[nextLast] = null;
@@ -147,8 +153,8 @@ public class ArrayDeque<Item> {
             }
         }
     }
-
 }
+
 
 
     
