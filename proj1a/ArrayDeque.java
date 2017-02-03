@@ -4,7 +4,7 @@ public class ArrayDeque<Item> {
     private int nextLast;
     private int nextFirst;
     private Item[] items;
-    private static int FACTOR = 4
+    private static int FACTOR = 4;
 
     public ArrayDeque() {
         size = 0;
@@ -43,11 +43,11 @@ public class ArrayDeque<Item> {
                 } else {
                     nextFirst -= 1;
                 }
-            }
+            
             items[nextFirst] = x;
             size += 1;
         }
-    }
+    
 
 
     public void addLast(Item x) {
@@ -63,7 +63,6 @@ public class ArrayDeque<Item> {
                 nextLast += 1;
             }
             items[nextLast] = x;
-        }
         size += 1;
     }
 
