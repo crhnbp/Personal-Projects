@@ -1,48 +1,86 @@
-import com.sun.imageio.plugins.common.I18N;
-import org.junit.Test;
-
 import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class TestArrayDeque1B {
 
     @Test
-    public void testRemoveFirst() {
-        StudentArrayDeque<Integer> studentArrayDeque = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> arrayDequeSolution = new ArrayDequeSolution<>();
-        for (int i = 0; i < 8; ++i) {
-            studentArrayDeque.addFirst(i);
-            arrayDequeSolution.addFirst(i);
+    public void testSize() {
+        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<Integer>();
+        assertTrue(sad1.isEmpty());
+        assertEquals(0, sad1.size());
+
+        FailureSequence fs = new FailureSequence();
+
+        for (int i = 0; i < 10; i++) {
+            sad1.addFirst(i);
+            DequeOperation dequeOp1 = new DequeOperation("addFirst", i);
+            fs.addOperation(dequeOp1);
         }
-        for (int i = 7; i != 0; --i) {
-            assertEquals(Integer.valueOf(i), arrayDequeSolution.removeFirst());
-//            assertEquals(Integer.valueOf(i), studentArrayDeque.removeFirst());
+
+        assertEquals(10, sad1.size());
+
+        for (int j = 0; j < 11; j++) {
+            sad1.removeFirst();
+            DequeOperation dequeOp2 = new DequeOperation("removeFirst");
+            fs.addOperation(dequeOp2);
         }
+
+        assertTrue(sad1.isEmpty());
+
+        DequeOperation dequeOp3 = new DequeOperation("size");
+        fs.addOperation(dequeOp3);
+
+        assertEquals(fs.toString(), 0, sad1.size());   // HURRAY! ERROR!
     }
 
     @Test
-    public void testRemoveFirstWithFailureSequence() {
-        StudentArrayDeque<Integer> studentArrayDeque = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> arrayDequeSolution = new ArrayDequeSolution<>();
-        FailureSequence failureSequence = new FailureSequence();
-        DequeOperation dequeOperation;
-        for (int i = 0; i < 8; ++i) {
-            studentArrayDeque.addFirst(i);
-            arrayDequeSolution.addFirst(i);
-            dequeOperation = new DequeOperation("addFirst", i);
-            failureSequence.addOperation(dequeOperation);
+    public void testRemoveFirst() {
+        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<Integer>();
+
+        for (int i = 0; i < 2; i++) {
+            sad1.addLast(i);
         }
-        studentArrayDeque.printDeque();
-        Integer actual, expected;
-        for (int i = 0; i < 8; ++i) {
-            actual = studentArrayDeque.removeFirst();
-            expected = arrayDequeSolution.removeFirst();
-            dequeOperation = new DequeOperation("removeFirst");
-            failureSequence.addOperation(dequeOperation);
-            assertEquals(failureSequence.toString(), expected, actual);
+
+        for (int j = 0; j < 7; j++) {
+            sad1.addFirst(j);
         }
+
+        int first = sad1.removeFirst();
+        assertEquals(6, first);
+    }
+
+    @Test
+    public void testRemoveLast() {
+        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<Integer>();
+        for (int i = 0; i < 10; i++) {
+            sad1.addLast(i);
+        }
+
+        int last = sad1.removeLast();
+        assertEquals(9, last);
+        assertEquals(9, sad1.size());
+    }
+
+    @Test
+    public void testGet() {
+        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<Integer>();
+
+        for (int i = 0; i < 2; i++) {
+            sad1.addLast(i);
+        }
+
+        for (int j = 0; j < 7; j++) {
+            sad1.addFirst(j);
+        }
+
+        sad1.printDeque();
+
+        int itemAtIndex = sad1.get(7);
+        assertEquals(0, itemAtIndex);
+
     }
 
     public static void main(String... args) {
-        jh61b.junit.TestRunner.runTests("all", StudentArrayDeque.class);
+        jh61b.junit.TestRunner.runTests("all", TestArrayDeque1B.class);
     }
 }
