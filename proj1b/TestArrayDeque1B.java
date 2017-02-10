@@ -54,14 +54,14 @@ public class TestArrayDeque1B {
         Random rn = new Random();
         for(int i =0;i<10;i++){
             //int rnd = rn.nextInt();
-            student.addLast(i);//instead of "i" i used "rn" for first time, "i" is easier to look at
+            student.addLast(i);
             solution.addLast(i);
         }
 
         for(int i = 0; i < 10; i++){
             Integer last = student.removeLast();
             DequeOperation aa = new DequeOperation("removeLast", last);
-            fs.addOperation(aa);
+            fs.addOperation();
             assertEquals(fs.toString(), solution.removeLast(), last);
         }
 
