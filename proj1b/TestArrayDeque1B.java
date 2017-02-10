@@ -15,8 +15,7 @@ public class TestArrayDeque1B {
         }
         ops(seq, bad, sol);
     }
-    public void ops(int [] seq, StudentArrayDeque<Integer> sad, 
-        ArrayDequeSolution<Integer> sol) {
+    public void ops(int [] seq, StudentArrayDeque<Integer> sad, ArrayDequeSolution<Integer> sol) {
         Random ran = new Random();
         String fs = "";
         for (int i = 0; i < seq.length; i++) {
@@ -56,7 +55,7 @@ public class TestArrayDeque1B {
                 Integer y = sad.removeLast();
                 assertEquals(fs, x, y);
             }
-            if(seq[i] == 6) {
+            if (seq[i] == 6) {
                 int num = ran.nextInt(seq.length - 1);
                 fs = fs + "get(" + num + ")" + "\n";
                 Integer x = sol.get(num);
