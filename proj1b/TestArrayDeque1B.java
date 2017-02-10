@@ -52,7 +52,7 @@ public class TestArrayDeque1B {
         ArrayDequeSolution<Integer> solution = new ArrayDequeSolution<>();
         OperationSequence fs = new OperationSequence();
         Random rn = new Random();
-        for(int i =0;i<9;i++){
+        for(int i =0;i<10;i++){
             //int rnd = rn.nextInt();
             student.addLast(i);
             solution.addLast(i);
@@ -60,9 +60,9 @@ public class TestArrayDeque1B {
 
         for(int i = 0; i < 10; i++){
             Integer last = student.removeLast();
-            DequeOperation aa = new DequeOperation("removeLast", last);
+            DequeOperation aa = new DequeOperation("removeLast");
             fs.addOperation(aa);
-            assertEquals(fs.toString(), solution.removeLast(), last);
+            assertEquals(fs.toString(), solution.removeLast());
         }
 
     }
