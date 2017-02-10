@@ -2,83 +2,70 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import java.util.Random;
 
-public class TestArrayDeque1B
-{
+public class TestArrayDeque1B {
     @Test
-    public void test50operations()
-    {
-        StudentArrayDeque <Integer> sad1 = new StudentArrayDeque <Integer>(); 
-        ArrayDequeSolution <Integer> sol1 = new ArrayDequeSolution <Integer>();
-        int [] sequence = new int[50];
+    public void testoperations() {
+        StudentArrayDeque<Integer> bad = new StudentArrayDeque<Integer>(); 
+        ArrayDequeSolution<Integer> sol = new ArrayDequeSolution<Integer>();
+        int [] seq = new int[60];
         Random rn = new Random();
-        for(int n = 0; n < 50; n++)
-        {
+        for (int n = 0; n < 60; n++) {
             int val = rn.nextInt(6);
-            sequence[n] = val;
+            seq[n] = val;
         }
-        operationDriver(sequence,sad1,sol1);
+        operationDriver(seq, bad, sol);
     }
-    public void operationDriver(int [] sequence, StudentArrayDeque<Integer> sad, ArrayDequeSolution <Integer> sol)
-    {
+    public void operationDriver(int [] seq, StudentArrayDeque<Integer> sad, 
+        ArrayDequeSolution<Integer> sol) {
         Random ran = new Random();
         String fs = "";
-        for(int i=0;i<sequence.length;i++)
-        {
-            if(sequence[i] == 0)
-            {
-                int num = ran.nextInt(50)+1;
+        for (int i = 0; i < seq.length; i++) {
+            if (seq[i] == 0) {
+                int num = ran.nextInt(60) + 1;
                 sad.addFirst(num);
                 sol.addFirst(num);
                 fs = fs + "addFirst(" + num + ")" + "\n";
-                
             }
-            if(sequence[i] == 1)
-            {
-                int num = ran.nextInt(50) + 1;
+            if (seq[i] == 1) {
+                int num = ran.nextInt(60) + 1;
                 sad.addLast(num);
                 sol.addLast(num);
                 fs = fs + "addLast(" + num + ")" + "\n";
             }
-            if(sequence[i] == 2)
-            {
+            if (seq[i] == 2) {
                 fs = fs + "isEmpty()" + "\n";
-                boolean o = sol.isEmpty();
-                boolean a = sad.isEmpty();
-                assertEquals(fs,o,a);
+                boolean x = sol.isEmpty();
+                boolean y = sad.isEmpty();
+                assertEquals(fs, x, y);
             }
-            if(sequence[i] == 3)
-            {
+            if (seq[i] == 3) {
                 fs = fs + "size()" + "\n";
-                Integer o = sol.size();
-                Integer a = sad.size();
-                assertEquals(fs,o,a);
+                Integer x = sol.size();
+                Integer y = sad.size();
+                assertEquals(fs, x, y);
             }
-            if(sequence[i] == 4)
-            {
+            if (seq[i] == 4) {
                 fs = fs + "removeFirst()" + "\n";
-                Integer o = sol.removeFirst();
-                Integer a = sad.removeFirst();
-                assertEquals(fs,o,a);
+                Integer x = sol.removeFirst();
+                Integer y = sad.removeFirst();
+                assertEquals(fs, x, y);
             }
-            if(sequence[i] == 5)
-            {
+            if (seq[i] == 5) {
                 fs = fs + "removeLast()" + "\n";
-                Integer o = sol.removeLast();
-                Integer a = sad.removeLast();
-                assertEquals(fs,o,a);
+                Integer x = sol.removeLast();
+                Integer y = sad.removeLast();
+                assertEquals(fs, x, y);
             }
-            if(sequence[i] == 6)
-            {
-                int num = ran.nextInt(sequence.length - 1);
+            if(seq[i] == 6) {
+                int num = ran.nextInt(seq.length - 1);
                 fs = fs + "get(" + num + ")" + "\n";
-                Integer o = sol.get(num);
-                Integer a = sad.get(num);
-                assertEquals(fs,o,a);
+                Integer x = sol.get(num);
+                Integer y = sad.get(num);
+                assertEquals(fs, x, y);
             }
         }
     }
-    public static void main(String[] args)
-    {
-        jh61b.junit.TestRunner.runTests("failed",TestArrayDeque1B.class);
+    public static void main(String[] args) {
+        jh61b.junit.TestRunner.runTests("failed", TestArrayDeque1B.class);
     }   
 }

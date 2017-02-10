@@ -30,7 +30,7 @@ public class Palindrome {
         int mid = n / 2;
         boolean isTrue = true;
         for (int i = 0; i < mid; i++) {
-            if (!cc.equalChars(word.charAt(i) , word.charAt(n - 1 - i))) {
+            if (!cc.equalChars(word.charAt(i), word.charAt(n - 1 - i))) {
                 isTrue = false;
             }
         }
