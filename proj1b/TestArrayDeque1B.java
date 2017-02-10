@@ -6,14 +6,14 @@ public class TestArrayDeque1B {
     @Test
     public void testoperations() {
         StudentArrayDeque<Integer> bad = new StudentArrayDeque<Integer>(); 
-        ArrayDequeSolution<Integer> sol = new ArrayDequeSolution<Integer>();
+        ArrayDequeSolution<Integer> sol1 = new ArrayDequeSolution<Integer>();
         int [] seq = new int[50];
         Random rn = new Random();
         for (int n = 0; n < 50; n++) {
             int val = rn.nextInt(6);
             seq[n] = val;
         }
-        ops(seq, bad, sol);
+        ops(seq, bad, sol1);
     }
     public void ops(int [] seq, StudentArrayDeque<Integer> sad, ArrayDequeSolution<Integer> sol) {
         Random ran = new Random();
