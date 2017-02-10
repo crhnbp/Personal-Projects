@@ -47,23 +47,24 @@ public class TestArrayDeque1B {
                 assertEquals(str, x, y);
             }
             if (seq[i] == 4) {
-                str = str + "removeFirst()" + "\n";
-                Integer x = sol.removeFirst();
-                Integer y = sad.removeFirst();
-                assertEquals(str, x, y);
-            }
-            if (seq[i] == 5) {
-                str = str + "removeLast()" + "\n";
-                Integer x = sol.removeLast();
-                Integer y = sad.removeLast();
-                assertEquals(str, x, y);
-            }
-            if (seq[i] == 6) {
                 int num = ran.nextInt(seq.length - 1);
                 str = str + "get(" + num + ")" + "\n";
                 Integer x = sol.get(num);
                 Integer y = sad.get(num);
                 assertEquals(str, x, y);
+            }
+            if (seq[i] == 5) {
+                str = str + "removeFirst()" + "\n";
+                Integer x = sol.removeFirst();
+                Integer y = sad.removeFirst();
+                assertEquals(str, x, y);
+            }
+            if (seq[i] == 6) {
+                str = str + "removeLast()" + "\n";
+                Integer x = sol.removeLast();
+                Integer y = sad.removeLast();
+                assertEquals(str, x, y);
+                
             }
         }
     }
