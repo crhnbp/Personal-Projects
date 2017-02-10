@@ -48,23 +48,22 @@ public class TestArrayDeque1B {
     }
     @Test
     public void testRemoveLast(){
-        StudentArrayDeque<Integer> student = new StudentArrayDeque<>();
-        ArrayDequeSolution<Integer> solution = new ArrayDequeSolution<>();
-        OperationSequence fs = new OperationSequence();
-        Random rn = new Random();
-        for(int i =0;i<10;i++){
-            //int rnd = rn.nextInt();
-            student.addLast(i);
-            solution.addLast(i);
-        }
+        StudentArrayDeque<Integer> sad = new StudentArrayDeque<>();
+        /*test empty case*/
+        assertEquals(null, sad.removeLast());
 
-        for(int i = 0; i < 10; i++){
-            Integer last = student.removeLast();
-            DequeOperation aa = new DequeOperation("removeLast");
-            fs.addOperation(aa);
-            assertEquals(fs.toString(), solution.removeLast());
-        }
+        StudentArrayDeque<Integer> sad1 = new StudentArrayDeque<>();
+        sad1.addLast(1);
+        sad1.addLast(2);
+        sad1.addLast(3);
+        int removedItem = sad1.removeLast();
+        assertEquals(3, removedItem);
+        StudentArrayDeque<Integer> sad2 = new StudentArrayDeque<>();
+        sad2.addLast(1);
+        sad2.addLast(2);
+        sad1.printDeque();
+    }
 
     }
 
-}
+
