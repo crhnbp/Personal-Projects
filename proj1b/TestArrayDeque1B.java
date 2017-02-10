@@ -7,27 +7,27 @@ public class TestArrayDeque1B {
     public void testoperations() {
         StudentArrayDeque<Integer> bad = new StudentArrayDeque<Integer>(); 
         ArrayDequeSolution<Integer> sol = new ArrayDequeSolution<Integer>();
-        int [] seq = new int[60];
+        int [] seq = new int[50];
         Random rn = new Random();
-        for (int n = 0; n < 60; n++) {
+        for (int n = 0; n < 50; n++) {
             int val = rn.nextInt(6);
             seq[n] = val;
         }
-        operationDriver(seq, bad, sol);
+        ops(seq, bad, sol);
     }
-    public void operationDriver(int [] seq, StudentArrayDeque<Integer> sad, 
+    public void ops(int [] seq, StudentArrayDeque<Integer> sad, 
         ArrayDequeSolution<Integer> sol) {
         Random ran = new Random();
         String fs = "";
         for (int i = 0; i < seq.length; i++) {
             if (seq[i] == 0) {
-                int num = ran.nextInt(60) + 1;
+                int num = ran.nextInt(50) + 1;
                 sad.addFirst(num);
                 sol.addFirst(num);
                 fs = fs + "addFirst(" + num + ")" + "\n";
             }
             if (seq[i] == 1) {
-                int num = ran.nextInt(60) + 1;
+                int num = ran.nextInt(50) + 1;
                 sad.addLast(num);
                 sol.addLast(num);
                 fs = fs + "addLast(" + num + ")" + "\n";
