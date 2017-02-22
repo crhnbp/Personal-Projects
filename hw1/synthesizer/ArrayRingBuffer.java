@@ -82,7 +82,7 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
         }
 
         public boolean hasNext() {
-            return currentIndex < fillcount;
+            return currentIndex < fillCount;
         }
 
         public T next() {
