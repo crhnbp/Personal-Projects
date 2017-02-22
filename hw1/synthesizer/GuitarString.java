@@ -36,7 +36,7 @@ public class GuitarString {
         //       Make sure that your random numbers are different from each other.
         int x = buffer.capacity();
         for (int i = 0; i < x; i += 1) {
-           buffer.dequeue();
+            buffer.dequeue();
         }
         for (int i = 0; i < x; i += 1) {
             buffer.enqueue(Math.random() - 0.5);

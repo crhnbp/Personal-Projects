@@ -1,11 +1,11 @@
-// TODO: Make sure to make this class a part of the synthesizer package
+// TODO: Make sure to make this class a part of the synthesizer package.
 // package <package name>;
 package synthesizer;
 
 import java.util.Iterator;
 
-//TODO: Make sure to make this class and all of its methods public
-//TODO: Make sure to make this class extend AbstractBoundedQueue<t>
+//TODO: Make sure to make this class and all of its methods public.
+//TODO: Make sure to make this class extend AbstractBoundedQueue<t>.
 public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
     /* Index for the next dequeue or peek. */
     private int first;            // index for the next dequeue or peek
@@ -40,7 +40,7 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
             throw new RuntimeException("Ring buffer overflow");
         }
         rb[last] = x;
-        last = (last + 1)% capacity;
+        last = (last + 1) % capacity;
         fillCount += 1;
         // TODO: Enqueue the item. Don't forget to increase fillCount and update last.
     }
@@ -56,7 +56,7 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
         }
         T item = rb[first];
         first = (first + 1) % capacity;
-        fillCount = fillCount -1;
+        fillCount = fillCount - 1;
         return item;
         // TODO: Dequeue the first item. Don't forget to decrease fillCount and update 
     }
@@ -75,9 +75,9 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
 
     // TODO: When you get to part 5, implement the needed code to support iteration.
     
-     private class MapWizard implements Iterator<T> {
+    private class Map implements Iterator<T> {
         private int currentIndex;
-        public MapWizard() {
+        Map() {
             currentIndex = first;
         }
 
