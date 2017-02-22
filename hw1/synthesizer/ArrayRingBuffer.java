@@ -37,7 +37,7 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
      */
     public void enqueue(T x) {
         if (isFull()) {
-            throw new RunTimeExpection("Ring Buffer Overflow");
+            throw new RunTimeException("Ring buffer overflow");
         }
         rb[last] = x;
         last = (last + 1)% capacity;
@@ -52,7 +52,7 @@ public class ArrayRingBuffer<T>  extends AbstractBoundedQueue<T> {
      */
     public T dequeue() {
         if (isEmpty()) {
-            throw new RuntimeException("Ring Buffer Underflow");
+            throw new RuntimeException("Ring buffer underflow");
         }
         T item = rb[first];
         first = (first + 1) % capacity;
