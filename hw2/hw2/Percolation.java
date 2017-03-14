@@ -3,99 +3,107 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    int rowLenght;
-    WeightedQuickUnionUF sites;
-    int TOP;
-    int BOTTOM;
-    int numOfopenSites;
-    boolean grid[][]; // later on, true will mean open position.
 
-    public Percolation(int N){
-        if (N < 0) {
-            throw new IllegalArgumentException();
+    private int N;
+    private WeightedQuickUnionUF uf;
+    private boolean[] openGrid;
+    private int openSites;
+    private int count;
 
+    /**create N-by-N grid, with all sites initially blocked*/
+    public Percolation(int N) {
+        if (N <= 0) {
+            throw new IllegalArgumentException("N should be positive");
         }
-        TOP = N * N;
-        BOTTOM = (N * N) + 1;
-        sites =  new WeightedQuickUnionUF((N * N) + 2);
-
-
-        rowLenght = N;
-        grid = new boolean[N][N];
-        for (int i = 0; i < N; i++){
-            for (int j = 0; j < N; j++){
-                grid[i][j] = false; 
-            }
+        this.N = N;
+        this.count = N*N;
+        uf = new WeightedQuickUnionUF(N*N + 2);
+        openGrid = new boolean[N*N];
+        for (int i = 0; i < openGrid.length; i++) {
+            openGrid[i] = false;
         }
-       /* for(int i = 0; i < N; i++){
-            sites.union(TOP, xyTo1d(0, i));
-            sites.union(BOTTOM, xyTo1d(rowLenght - 1, i));
-        }   */
+        openSites = 0;
     }
-    public void open(int row, int col){
-    /*if((rowLenght - 1) < (row || col)){
-        throw new IllegalArgumentException(); } */
-        if ( (rowLenght - 1 < row) || (rowLenght - 1 < col) || (col < 0) || (row < 0)) {
-                throw new IndexOutOfBoundsException();
+
+    public int getCount() {
+        return count;
     }
-        if(grid[row][col] != true) {
-            grid[row][col] = true;
-            if (row == 0) {
-                sites.union(TOP, xyTo1d(row, col));
-            }
-            if (row == rowLenght - 1) {
-                sites.union(BOTTOM, xyTo1d(row, col));
-            }
-            if (row > 0) {
-                if (grid[row][col] == grid[row - 1][col]) {
-                    sites.union(xyTo1d(row, col), xyTo1d(row - 1, col));
 
-                }
-            }
-            if (row < rowLenght - 1) {
-                if (grid[row][col] == grid[row + 1][col]) {
-                    //if((row + 1) != rowLenght - 1) {
-                    sites.union(xyTo1d(row, col), xyTo1d(row + 1, col));
-                    // }
-                }
-            }
-            if (col > 0) {
-                if (grid[row][col] == grid[row][col - 1]) {
-                    sites.union(xyTo1d(row, col), xyTo1d(row, col - 1));
-
-                }
-            }
-            if (col < rowLenght - 1) {
-                if (grid[row][col] == grid[row][col + 1]) {
-                    sites.union(xyTo1d(row, col), xyTo1d(row, col + 1));
-
-                }
-
-            }
-            numOfopenSites += 1;
+    private void checkIndex(int row, int col) {
+        if ((row < 0 || row >= N) || (col < 0 || col >= N)) {
+            throw new IndexOutOfBoundsException("row and col should be between 0 and N-1");
         }
     }
-    public boolean isOpen(int row, int col){
-        if ( (rowLenght - 1 < row) || (rowLenght - 1 < col) || (col< 0) || (row < 0)) {
-            throw new IndexOutOfBoundsException();
 
-        }
-        return grid[row][col];
-    }
-    public boolean isFull(int row, int col){
-        if ( (rowLenght - 1 < row) || (rowLenght - 1 < col) || (row < 0) || (col < 0)) {
-            throw new IndexOutOfBoundsException();
-        }
-        return sites.connected(TOP, xyTo1d(row,col));
-    }
-    public int numberOfOpenSites(){
-        return numOfopenSites;
-    }
-    public boolean percolates(){
-    return sites.connected(TOP, BOTTOM);
-    }
-    private int xyTo1d(int row, int col){
-        return col + row * (rowLenght );
+    private int xyTo1D(int r, int col) {
+        return r * N + col;
     }
 
-}
+    private void tryUnionAround(int row, int col) {
+        checkIndex(row, col);
+        int index = xyTo1D(row, col);
+        if ((row-1 >= 0 && row-1 < N) && (col >= 0 && col < N) && isOpen(row-1, col)) {
+            uf.union(xyTo1D(row-1, col), index);
+        }
+        if ((row+1 >= 0 && row+1 < N) && (col >= 0 && col < N) && isOpen(row+1, col)) {
+            uf.union(xyTo1D(row+1, col), index);
+        }
+        if ((row >= 0 && row < N) && (col-1 >= 0 && col-1 < N) && isOpen(row, col-1)) {
+            uf.union(xyTo1D(row, col-1), index);
+        }
+        if ((row >= 0 && row < N) && (col+1 >= 0 && col+1 < N) && isOpen(row, col+1)) {
+            uf.union(xyTo1D(row, col+1), index);
+        }
+        if (row == 0) {
+            uf.union(index, N*N);
+        }
+        if (row == N-1) {
+            uf.union(index, N*N+1);
+        }
+    }
+
+    /** open the site (row, col) if it is not open already*/
+    public void open(int row, int col) {
+        checkIndex(row, col);
+        if (isOpen(row, col)) {
+            return;
+        }
+        int index = xyTo1D(row, col);
+        openGrid[index] = true;
+        openSites++;
+        tryUnionAround(row, col);
+    }
+
+    /**is the site (row, col) open?*/
+    public boolean isOpen(int row, int col) {
+        checkIndex(row, col);
+        int index = xyTo1D(row, col);
+        return openGrid[index];
+    }
+
+    /**is the site (row, col) full?*/
+    public boolean isFull(int row, int col) {
+        checkIndex(row, col);
+        if (!isOpen(row, col)) {
+            return false;
+        }
+        int index = xyTo1D(row, col);
+        return uf.connected(index, N*N);
+    }
+
+    /**number of open sites*/
+    public int numberOfOpenSites() {
+        return openSites;
+    }
+
+    /**does the system percolate?*/
+    public boolean percolates() {
+        return uf.connected(N*N+1, N*N);
+    }
+
+    /**unit testing (not required)*/
+    public static void main(String[] args) {
+        System.out.println(-4 % 3);
+        System.out.println(Math.abs(Integer.MAX_VALUE));
+    }
+}    
