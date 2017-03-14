@@ -1,161 +1,101 @@
-package hw2;
-import edu.princeton.cs.algs4.StdDraw;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.In;
-import edu.princeton.cs.introcs.StdRandom;
-import edu.princeton.cs.introcs.StdStats;
+package hw2;                       
+
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
+    int rowLenght;
+    WeightedQuickUnionUF sites;
+    int TOP;
+    int BOTTOM;
+    int numOfopenSites;
+    boolean grid[][]; // later on, true will mean open position.
 
-    private int rowSize;
-    private int gridSize;
-    private boolean[] grid;
-    private WeightedQuickUnionUF unionFind;
-    private int bottomVS;
-    private int topVS;
-    private int numopen;
+    public Percolation(int N){
+        if (N < 0) {
+            throw new IllegalArgumentException();
 
-    
-    public Percolation(int number) {
-        if (number <= 0) {
-            throw new java.lang.IllegalArgumentException(
-                    "N must be larger than 0");
         }
-        rowSize    = number;
-        gridSize   = number * number;
-        grid       = new boolean[gridSize];
-        bottomVS   = gridSize + 1;
-        topVS      = gridSize;
-        unionFind  = new WeightedQuickUnionUF(gridSize + 2);
+        TOP = N * N;
+        BOTTOM = (N * N) + 1;
+        sites =  new WeightedQuickUnionUF((N * N) + 2);
 
-    }
 
-    private void checkIndex(int i, int j) {
-
-        if (i < 1 || i > rowSize) {
-            throw new java.lang.IndexOutOfBoundsException(
-                    "i must be between 1 and " + rowSize);
-        }
-        if (j < 1 || j > rowSize) {
-            throw new java.lang.IndexOutOfBoundsException(
-                    "j must be between 1 and " + rowSize);
-        }
-    }
-
-    private int changeDimension(int i, int  j) {
-        // 2D coordinates to right index on 1D array.
-        // ( row -1 x column ) + row -1
-        int newIndex = (i - 1) * rowSize + (j - 1);
-        return newIndex;
-    }
-
-    public int numberOfOpenSites() {
-        return numopen;
-    }
-
-    public void open(int i, int j) {
-        checkIndex(i, j);
-        int index = changeDimension(i, j);
-        grid[index] = true;
-        numopen = numopen + 1;
-
-        if (i == 1) {
-            unionFind.union(index, topVS);
-        }
-
-        boolean hasN = false;
-        for (int k = 0; k < 4; k++) {
-            int adjacent = getAdjacentIndex(i, j, k);
-            if (adjacent != -1) {
-                unionFind.union(adjacent, index);
-                hasN = true;
+        rowLenght = N;
+        grid = new boolean[N][N];
+        for (int i = 0; i < N; i++){
+            for (int j = 0; j < N; j++){
+                grid[i][j] = false; 
             }
         }
-
-        if (hasN) {
-            for (int index2 = gridSize - 1; index2 >= gridSize - rowSize;
-                    index2--) {
-                if (grid[index2] && unionFind.connected(topVS, index2)) {
-                    unionFind.union(index2, bottomVS);
-                    break;
-                   }
+       /* for(int i = 0; i < N; i++){
+            sites.union(TOP, xyTo1d(0, i));
+            sites.union(BOTTOM, xyTo1d(rowLenght - 1, i));
+        }   */
+    }
+    public void open(int row, int col){
+    /*if((rowLenght - 1) < (row || col)){
+        throw new IllegalArgumentException(); } */
+        if ( (rowLenght - 1 < row) || (rowLenght - 1 < col) || (col < 0) || (row < 0)) {
+                throw new IndexOutOfBoundsException();
+    }
+        if(grid[row][col] != true) {
+            grid[row][col] = true;
+            if (row == 0) {
+                sites.union(TOP, xyTo1d(row, col));
             }
-        }
-
-    }
-
-    private int getAdjacentIndex(int i, int j, int k) {
-
-        int row = 0, column = 0, adjacent = -1;
-
-        if (k == 0) {  //up
-            row = i - 1;
-            column = j;
-        } else if (k == 1) { //down
-            row = i + 1;
-            column = j;
-        } else if (k == 2) { //left
-            row = i;
-            column = j - 1;
-        } else if (k == 3) {
-            row = i;
-            column = j + 1;
-        } else {
-            throw new java.lang.IllegalArgumentException(
-                    "Direction must be between 0 and 3");
-        }
-
-        if (row > 0 && row <= rowSize && column > 0
-                && column <= rowSize) {
-            if (isOpen(row, column)) {
-                adjacent = changeDimension(row, column);
+            if (row == rowLenght - 1) {
+                sites.union(BOTTOM, xyTo1d(row, col));
             }
+            if (row > 0) {
+                if (grid[row][col] == grid[row - 1][col]) {
+                    sites.union(xyTo1d(row, col), xyTo1d(row - 1, col));
+
+                }
+            }
+            if (row < rowLenght - 1) {
+                if (grid[row][col] == grid[row + 1][col]) {
+                    //if((row + 1) != rowLenght - 1) {
+                    sites.union(xyTo1d(row, col), xyTo1d(row + 1, col));
+                    // }
+                }
+            }
+            if (col > 0) {
+                if (grid[row][col] == grid[row][col - 1]) {
+                    sites.union(xyTo1d(row, col), xyTo1d(row, col - 1));
+
+                }
+            }
+            if (col < rowLenght - 1) {
+                if (grid[row][col] == grid[row][col + 1]) {
+                    sites.union(xyTo1d(row, col), xyTo1d(row, col + 1));
+
+                }
+
+            }
+            numOfopenSites += 1;
         }
-
-        return adjacent;
     }
+    public boolean isOpen(int row, int col){
+        if ( (rowLenght - 1 < row) || (rowLenght - 1 < col) || (col< 0) || (row < 0)) {
+            throw new IndexOutOfBoundsException();
 
-    public boolean isOpen(int i, int j) {
-        checkIndex(i, j);
-        boolean isItOpen = grid[changeDimension(i, j)];
-        return isItOpen;
-
+        }
+        return grid[row][col];
     }
-
-    public boolean isFull(int i, int j) {
-        checkIndex(i, j);
-        boolean isItFull = unionFind.connected(
-                topVS, changeDimension(i, j));
-        return isItFull;
-
+    public boolean isFull(int row, int col){
+        if ( (rowLenght - 1 < row) || (rowLenght - 1 < col) || (row < 0) || (col < 0)) {
+            throw new IndexOutOfBoundsException();
+        }
+        return sites.connected(TOP, xyTo1d(row,col));
     }
-
-    public boolean percolates() {
-        boolean doesIt = unionFind.connected(topVS, bottomVS);
-        return doesIt;
+    public int numberOfOpenSites(){
+        return numOfopenSites;
     }
-
-
-    public static void main(final String[] args) {
-
-        Percolation p = new Percolation(4);
-        System.out.println("Bottom virtual site position "
-                + p.bottomVS);
-        System.out.println("Does it percolates? " + p.percolates());
-        System.out.println("Grid lenght " + p.grid.length);
-         p.open(4, 1);
-         p.open(3, 1);
-         p.open(2, 1);
-         p.open(1, 1);
-         p.open(1, 4);
-         p.open(2, 4);
-         System.out.println(p.unionFind.connected(16, 8));
-         p.open(4, 4);
-         System.out.println(p.unionFind.find(3));
-        System.out.println("Does it percolates? " + p.percolates());
-
+    public boolean percolates(){
+    return sites.connected(TOP, BOTTOM);
     }
-
+    private int xyTo1d(int row, int col){
+        return col + row * (rowLenght );
+    }
 
 }
