@@ -4,6 +4,7 @@ import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
+import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
     private int top;
@@ -28,7 +29,7 @@ public class Percolation {
         return pos;
     }
 
-    private int numberOfOpenSites() {
+    public int numberOfOpenSites() {
         return opens;
     }
     
