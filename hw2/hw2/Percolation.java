@@ -98,7 +98,6 @@ public class Percolation {
                     percolate = true;
                 }
             }
-        } catch (IndexOutOfBoundsException e) {
         }
     }
     
