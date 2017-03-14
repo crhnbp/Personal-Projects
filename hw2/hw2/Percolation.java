@@ -1,3 +1,5 @@
+package hw2;
+
 public class Percolation {
     private int top;
     private int bottom;

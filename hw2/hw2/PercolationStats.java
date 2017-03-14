@@ -1,3 +1,5 @@
+package hw2;
+
 public class PercolationStats {
     private int t;
     private double[] threshold;
