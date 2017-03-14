@@ -12,6 +12,7 @@ public class Percolation {
     private WeightedQuickUnionUF uf;
     private WeightedQuickUnionUF uf1;
     private byte[] site; 
+    private int opens;
 
     public Percolation(int N) {
         x = N;
@@ -26,6 +27,10 @@ public class Percolation {
         int pos = x * (i - 1) + j - 1;
         return pos;
     }
+
+    private int numberOfOpenSites() {
+        return opens;
+    }
     
     public void open(int i, int j) {
         inBounds(i, j);
@@ -34,6 +39,7 @@ public class Percolation {
             return;
         } else {
         this.site[currentSite] = 1;
+        opens = opens + 1;
         }
 
         if (i == 1 && !uf.connected(currentSite, top)) {
