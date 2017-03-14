@@ -50,7 +50,7 @@ public class Percolation {
         return newIndex;
     }
 
-    public int numberOfOpenSsites() {
+    public int numberOfOpenSites() {
         return numopen;
     }
 
