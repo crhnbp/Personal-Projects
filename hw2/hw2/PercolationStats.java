@@ -6,54 +6,61 @@ import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
-    private int t;
-    private double[] threshold;
-    
+
+    private Percolation[] percolation;
+    private double[] xs;
+    private double mean;
+    private double stddev;
+    private int T;
+    private int N;
+
+    /**perform T independent experiments on an N-by-N grid*/
     public PercolationStats(int N, int T) {
-         if (N < 1 || T < 1) {
-             throw new IllegalArgumentException();
-         }
-         t = T;
-         threshold = new double[t];
-         
-         for (int i = 0; i < threshold.length; i++) {
-             threshold[i] = calcthreshold(N);
-         }
-    } 
-    
-    private double calcthreshold(int n) {
-        double c = 0;
-        int i, j;
-        Percolation perc = new Percolation(n);
-        while (!perc.percolates())
-        {
-            i = StdRandom.uniform(n)+1;
-            j = StdRandom.uniform(n)+1;
-            if (!perc.isOpen(i, j))
-            {
-                c++;
-                perc.open(i, j);
-            }
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException("N and T should be positive");
         }
-        return c / (n*n);
-    }
-    
-    public double mean() {
-        
-        return StdStats.mean(threshold);
-    }
-    
-    public double stddev() {
-        return StdStats.stddev(threshold);
-    }
-    
-    public double confidenceLow() {
-        return mean() - (1.96*stddev())/(Math.sqrt(t)); 
+        this.T = T;
+        this.N = N;
+        this.percolation = new Percolation[T];
+        for (int i = 0; i < T; i++) {
+            percolation[i] = new Percolation(N);
+        }
+        this.xs = new double[T];
+        getxs();
+        this.mean = StdStats.mean(xs);
+        this.stddev = StdStats.stddev(xs);
     }
 
-    public double confidenceHigh() {
-        return mean() + (1.96*stddev())/(Math.sqrt(t)); 
+    private void getxs() {
+        for (int i = 0; i < N; i++) {
+            while (!percolation[i].percolates()) {
+                int row = StdRandom.uniform(N);
+                int col = StdRandom.uniform(N);
+                percolation[i].open(row, col);
+            }
+            xs[i] = percolation[i].numberOfOpenSites() / percolation[i].getCount();
+        }
     }
-    
-}
+
+    /**sample mean of percolation threshold*/
+    public double mean() {
+        return mean;
+    }
+    /**sample standard deviation of percolation threshold*/
+    public double stddev() {
+        return stddev;
+    }
+
+    /**low  endpoint of 95% confidence interval*/
+    public double confidenceLow() {
+        double cL = mean - (1.96 * stddev) / Math.sqrt(T);
+        return cL;
+    }
+
+    /**high endpoint of 95% confidence interval*/
+    public double confidenceHigh() {
+        double cH = mean + (1.96 * stddev) / Math.sqrt(T);
+        return cH;
+    }
+}          
 
