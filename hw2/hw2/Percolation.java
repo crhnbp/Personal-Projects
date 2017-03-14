@@ -1,109 +1,158 @@
 package hw2;                       
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
+import java.util.Arrays;
 
 public class Percolation {
-
-    private int N;
-    private WeightedQuickUnionUF uf;
-    private boolean[] openGrid;
-    private int openSites;
-    private int count;
-
-    /**create N-by-N grid, with all sites initially blocked*/
+    // We will use the WeightedQuickUnionUF as data structure
+    private WeightedQuickUnionUF parent;
+    private WeightedQuickUnionUF parentHelper;
+    private boolean[][] grid;
+    private int gridSize;
+    private int gridDim;
+    private int numberOfOpenSites;
+    private boolean percolate;
     public Percolation(int N) {
         if (N <= 0) {
-            throw new IllegalArgumentException("N should be positive");
+            throw new IllegalArgumentException(N + " is non-positive.");
         }
-        this.N = N;
-        this.count = N*N;
-        uf = new WeightedQuickUnionUF(N*N + 2);
-        openGrid = new boolean[N*N];
-        for (int i = 0; i < openGrid.length; i++) {
-            openGrid[i] = false;
+        // Create N-by-N grid with all sites initially blocked
+        gridSize = N * N;
+        gridDim = N;
+        numberOfOpenSites = 0;
+        grid = new boolean[gridDim][gridDim]; 
+        // initialize everything with false
+        for (boolean[] row: grid) {
+            Arrays.fill(row, false);
         }
-        openSites = 0;
-    }
+        percolate = false;
+        // Create two more spots, to store as virtual top and bottom.
+        parent = new WeightedQuickUnionUF(gridSize + 2);
+        parentHelper = new WeightedQuickUnionUF(gridSize + 1);
 
-    private int getCount() {
-        return count;
     }
-
-    private void checkIndex(int row, int col) {
-        if ((row < 0 || row >= N) || (col < 0 || col >= N)) {
-            throw new IndexOutOfBoundsException("row and col should be between 0 and N-1");
+    // We write a helper function here to convert X,Y-coordinate into 
+    // index of the WeightedQuickUnionUF
+    private int coordinateToIndex(int row, int col) {
+        // because this is a N-by-N grid
+        int index = col + 1;
+        if (row > 0) {
+            index = row * gridDim + col + 1;
         }
+        return index;
     }
-
-    private int xyTo1D(int r, int col) {
-        return r * N + col;
-    }
-
-    private void tryUnionAround(int row, int col) {
-        checkIndex(row, col);
-        int index = xyTo1D(row, col);
-        if ((row-1 >= 0 && row-1 < N) && (col >= 0 && col < N) && isOpen(row-1, col)) {
-            uf.union(xyTo1D(row-1, col), index);
+    private void validate(int row, int col) {
+        if (row < 0) {
+            throw new IndexOutOfBoundsException();
         }
-        if ((row+1 >= 0 && row+1 < N) && (col >= 0 && col < N) && isOpen(row+1, col)) {
-            uf.union(xyTo1D(row+1, col), index);
+        if (row >= gridDim) {
+            throw new IndexOutOfBoundsException();
         }
-        if ((row >= 0 && row < N) && (col-1 >= 0 && col-1 < N) && isOpen(row, col-1)) {
-            uf.union(xyTo1D(row, col-1), index);
+        if (col < 0) {
+            throw new IndexOutOfBoundsException();
         }
-        if ((row >= 0 && row < N) && (col+1 >= 0 && col+1 < N) && isOpen(row, col+1)) {
-            uf.union(xyTo1D(row, col+1), index);
+        if (col >= gridDim) {
+            throw new IndexOutOfBoundsException();
         }
-        if (row == 0) {
-            uf.union(index, N*N);
-        }
-        if (row == N-1) {
-            uf.union(index, N*N+1);
+        int x = coordinateToIndex(row, col);
+        if (x < 1 || x >  gridSize) {
+            throw new IndexOutOfBoundsException();
         }
     }
-
-    /** open the site (row, col) if it is not open already*/
     public void open(int row, int col) {
-        checkIndex(row, col);
-        if (isOpen(row, col)) {
-            return;
+        // open the site(row, col) if it is not open already
+        try {
+            validate(row, col);
+            int index = coordinateToIndex(row, col);
+            // check if it is open already
+            if (!isOpen(row, col)) {
+            // if not, open, and take care of connection
+                grid[row][col] = true;
+                numberOfOpenSites += 1;
+                // Then connect any neighbor
+                if (row - 1 >= 0) {
+                    if (isOpen(row - 1, col)) {
+                        parent.union(index, coordinateToIndex(row - 1, col));
+                        parentHelper.union(index, coordinateToIndex(row - 1, col));
+                    }
+                }
+                if (row + 1 < gridDim) {
+                    if (isOpen(row + 1, col)) {
+                        parent.union(index, coordinateToIndex(row + 1, col));
+                        parentHelper.union(index, coordinateToIndex(row + 1, col));
+                    }
+                }
+                if (col - 1 >= 0) {
+                    if (isOpen(row, col - 1)) {
+                        parent.union(index, coordinateToIndex(row, col - 1));
+                        parentHelper.union(index, coordinateToIndex(row, col - 1));
+                    }
+                }
+                if (col + 1 < gridDim) {
+                    if (isOpen(row, col + 1)) {
+                        parent.union(index, coordinateToIndex(row, col + 1));
+                        parentHelper.union(index, coordinateToIndex(row, col + 1));
+                    }
+                }
+                if (row == 0) {
+                // connect to the top
+                    parent.union(index, 0);
+                    parentHelper.union(index, 0);
+                }
+                if (row == gridDim - 1) {
+                    parent.union(index, gridSize + 1);
+                }
+                if (row == gridDim - 1) {
+                    if (isFull(row, col)) {
+                        percolate = true;
+                    }
+                }
+                if (parent.connected(0, gridSize + 1)) {
+                    percolate = true;
+                }
+                // The condition that any of the last row percolates
+            }
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            // System.out.println("Index out of bounds.");
         }
-        int index = xyTo1D(row, col);
-        openGrid[index] = true;
-        openSites++;
-        tryUnionAround(row, col);
     }
-
-    /**is the site (row, col) open?*/
     public boolean isOpen(int row, int col) {
-        checkIndex(row, col);
-        int index = xyTo1D(row, col);
-        return openGrid[index];
-    }
-
-    /**is the site (row, col) full?*/
-    public boolean isFull(int row, int col) {
-        checkIndex(row, col);
-        if (!isOpen(row, col)) {
+        // is the site (row, col) open
+        try {
+            validate(row, col);
+            int index = coordinateToIndex(row, col);
+            // can we the connected function
+            return grid[row][col];
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            // System.out.println("Index out of bounds.");
             return false;
         }
-        int index = xyTo1D(row, col);
-        return uf.connected(index, N*N);
     }
-
-    /**number of open sites*/
+    public boolean isFull(int row, int col) {
+        // is the site (row, col) full
+        try {
+            validate(row, col);
+            int index = coordinateToIndex(row, col);
+            // see if the current index is connected to the top
+            return parentHelper.connected(index, 0);
+        } catch (IndexOutOfBoundsException indexOutOfBoundsException) {
+            // System.out.println("Index out of bounds.");
+            return false;
+        }
+    }
     public int numberOfOpenSites() {
-        return openSites;
+        // return the number of open sites
+        // System.out.println("number of open sites");
+        // System.out.println(numberOfOpenSites);
+        return numberOfOpenSites;
     }
-
-    /**does the system percolate?*/
     public boolean percolates() {
-        return uf.connected(N*N+1, N*N);
+        // return true if the system percolates
+        // ie, any of the last row is full.
+        return percolate;
     }
-
-    /**unit testing (not required)*/
     public static void main(String[] args) {
-        System.out.println(-4 % 3);
-        System.out.println(Math.abs(Integer.MAX_VALUE));
+        // unit testing
+        // System.out.println("This is the main.");
     }
-}    
+}       

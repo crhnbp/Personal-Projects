@@ -1,66 +1,58 @@
 package hw2;
-import edu.princeton.cs.algs4.StdDraw;
-import edu.princeton.cs.algs4.StdOut;
-import edu.princeton.cs.algs4.In;
+
 import edu.princeton.cs.introcs.StdRandom;
 import edu.princeton.cs.introcs.StdStats;
 
 public class PercolationStats {
-
-    private Percolation[] percolation;
-    private double[] xs;
-    private double mean;
-    private double stddev;
-    private int T;
-    private int N;
-
-    /**perform T independent experiments on an N-by-N grid*/
+    private static double[] stat;
+    // private static double stat;
+    private int times;
     public PercolationStats(int N, int T) {
-        if (N <= 0 || T <= 0) {
-            throw new IllegalArgumentException("N and T should be positive");
+        // Perform T independent experiemnts on an N-by-N grid
+        if (N <= 0) {
+            throw new IllegalArgumentException(N + " is not positive.");
         }
-        this.T = T;
-        this.N = N;
-        this.percolation = new Percolation[T];
+        if (T <= 0) {
+            throw new IllegalArgumentException(T + " is not positive.");
+        }
+        stat = new double[T];
+        times = T;
         for (int i = 0; i < T; i++) {
-            percolation[i] = new Percolation(N);
-        }
-        this.xs = new double[T];
-        getxs();
-        this.mean = StdStats.mean(xs);
-        this.stddev = StdStats.stddev(xs);
-    }
-
-    private void getxs() {
-        for (int i = 0; i < N; i++) {
-            while (!percolation[i].percolates()) {
-                int row = StdRandom.uniform(N);
-                int col = StdRandom.uniform(N);
-                percolation[i].open(row, col);
+            Percolation perc = new Percolation(N);
+            int count = 0;
+            while (count < N * N * N) {
+                int j = StdRandom.uniform(N);
+                int k = StdRandom.uniform(N);
+                perc.open(j, k);
+                if (perc.percolates()) {
+                    stat[i] = ((double) perc.numberOfOpenSites()) / (N * N);
+                    break;
+                }
+                count += 1;
             }
-            xs[i] = percolation[i].numberOfOpenSites() / percolation[i].getCount();
         }
     }
-
-    /**sample mean of percolation threshold*/
     public double mean() {
-        return mean;
+        // Sample mean of percolation threshold
+        return StdStats.mean(stat);
     }
-    /**sample standard deviation of percolation threshold*/
     public double stddev() {
-        return stddev;
+        // Sample standard deviation
+        return StdStats.stddev(stat);
     }
-
-    /**low  endpoint of 95% confidence interval*/
     public double confidenceLow() {
-        double cL = mean - (1.96 * stddev) / Math.sqrt(T);
-        return cL;
+        // low endpoint of 95% confidence interval
+        return mean() - 1.96 * stddev() / Math.sqrt(times);
     }
-
-    /**high endpoint of 95% confidence interval*/
     public double confidenceHigh() {
-        double cH = mean + (1.96 * stddev) / Math.sqrt(T);
-        return cH;
+        // high endpoint of 95% confidence interval
+        return mean() + 1.96 * stddev() / Math.sqrt(times);
     }
-}          
+    public static void main(String[] args) {
+        int N = Integer.parseInt(args[0]);
+        int T = Integer.parseInt(args[1]);
+        PercolationStats percStat = new PercolationStats(N, T);
+        System.out.println(percStat.mean());
+    }
+}                 
 
