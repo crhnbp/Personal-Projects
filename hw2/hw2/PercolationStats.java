@@ -47,11 +47,11 @@ public class PercolationStats {
         return StdStats.stddev(threshold);
     }
     
-    public double confidenceLo() {
+    public double confidenceLow() {
         return mean() - (1.96*stddev())/(Math.sqrt(t)); 
     }
 
-    public double confidenceHi() {
+    public double confidenceHigh() {
         return mean() + (1.96*stddev())/(Math.sqrt(t)); 
     }
     
