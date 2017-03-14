@@ -22,7 +22,7 @@ public class Percolation {
         uf = new WeightedQuickUnionUF(size * size + 2);
     }
 
-    public int numOpen() {
+    public int numberOfOpenSites() {
         return numopen;
     }
     public void open(int i, int j) {
