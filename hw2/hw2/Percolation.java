@@ -7,113 +7,64 @@ import edu.princeton.cs.introcs.StdStats;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 
 public class Percolation {
-    private int top;
+
+    private int top = 0;
     private int bottom;
-    private int x;
+    private int size;
     private WeightedQuickUnionUF uf;
-    private WeightedQuickUnionUF uf1;
-    private byte[] site; 
-    private int opens;
+    private boolean[][] opened;
+    private int numopen;
 
     public Percolation(int N) {
-        x = N;
-        uf = new WeightedQuickUnionUF(x * x + 2);
-        uf1 = new WeightedQuickUnionUF(x * x + 2);
-        top = x * x;
-        bottom = x * x + 1;
-        site = new byte[x * x];
+        size = N;
+        opened = new boolean[size][size];
+        bottom = size * size + 1;
+        uf = new WeightedQuickUnionUF(size * size + 2);
+    }
+
+    public int numOpen() {
+        return numopen;
+    }
+    public void open(int i, int j) {
+        opened[i - 1][j - 1] = true;
+        numopen = numopen + 1;
+        if (i == 1) {
+            uf.union(getInd(i, j), top);
+        }
+        if (i == size) {
+            uf.union(getInd(i, j), bottom);
+        }
+        if (j > 1 && isOpen(i, j - 1)) {
+            uf.union(getInd(i, j), getInd(i, j - 1));
+        }
+        if (j < size && isOpen(i, j + 1)) {
+            uf.union(getInd(i, j), getInd(i, j + 1));
+        }
+        if (i > 1 && isOpen(i - 1, j)) {
+            uf.union(getInd(i, j), getInd(i - 1, j));
+        }
+        if (i < size && isOpen(i + 1, j)) {
+            uf.union(getInd(i, j), getInd(i + 1, j));
+        }
+    }
+
+    public boolean isOpen(int i, int j) {
+        return opened[i - 1][j - 1];
+    }
+
+    public boolean isFull(int i, int j) {
+        if (0 < i && i <= size && 0 < j && j <= size) {
+            return uf.connected(top, getInd(i , j));
+        } else {
+            throw new IndexOutOfBoundsException();
+        }
+    }
+
+    public boolean percolates() {
+        return uf.connected(top, bottom);
     }
 
     private int getInd(int i, int j) {
-        int pos = x * (i - 1) + j - 1;
-        return pos;
-    }
-
-    public int numberOfOpenSites() {
-        return opens;
-    }
-    
-    public void open(int i, int j) {
-        inBounds(i, j);
-        int currentSite = getInd(i, j); 
-        if (isOpen(i, j)) {
-            return;
-        } else {
-        this.site[currentSite] = 1;
-        opens = opens + 1;
-        }
-
-        if (i == 1 && !uf.connected(currentSite, top)) {
-            uf.union(currentSite, top);
-            uf1.union(currentSite, top);
-        }
-        
-        if (i == x) {
-            uf1.union(currentSite, bottom);
-        }
-        
-        if (i > 1) {
-            if (isOpen(i - 1, j)) {
-                uf.union(currentSite, getInd(i-1, j));
-                uf1.union(currentSite, getInd(i-1, j));
-            }
-        }
-        
-        if (i < x) {
-            if (isOpen(i + 1, j)) {
-                uf.union(currentSite, getInd(i + 1, j));
-                uf1.union(currentSite, getInd(i + 1, j));
-            }
-        }
-
-        if (j > 1) {
-            if (isOpen(i, j - 1)) {
-                uf.union(currentSite, getInd(i, j - 1));
-                uf1.union(currentSite, getInd(i, j - 1));
-            }
-        }
-        
-        if (j < x) {
-            if (isOpen(i, j + 1)) {
-                uf.union(currentSite, getInd(i, j + 1));
-                uf1.union(currentSite, getInd(i, j + 1));
-            }
-        }
-    }
-    
-    private boolean inBounds(int i, int j) {
-        if (i < 1 || i > x || j < 1 || j > x) {
-            throw new IndexOutOfBoundsException();
-        } else {
-        return true;
-    }
-}
-
-    public boolean isOpen(int i, int j) {
-        inBounds(i, j);
-        if (site[getInd(i, j)] == 1){
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean isFull(int i, int j) {
-        inBounds(i, j);
-        if (!isOpen(i, j)) {
-            return false;
-        }
-        int currentSite = getInd(i, j);
-        if (uf.connected(top, currentSite)) {
-            return true;
-        }
-        return false;
-    }
-    
-    public boolean percolates()            
-    {
-        if (uf1.connected(top, bottom)) {
-            return true;
-        }
-        return false;
+        return size * (i - 1) + j;
     }
 }
