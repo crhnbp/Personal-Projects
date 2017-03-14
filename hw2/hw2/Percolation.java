@@ -25,7 +25,7 @@ public class Percolation {
         openSites = 0;
     }
 
-    public int getCount() {
+    private int getCount() {
         return count;
     }
 
