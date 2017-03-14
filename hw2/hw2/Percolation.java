@@ -99,7 +99,7 @@ public class Percolation {
                 }
             }
         } catch (IndexOutOfBoundsException e) {
-            //xd
+            // System.out.println("out of bounds");
         }
     }
     
