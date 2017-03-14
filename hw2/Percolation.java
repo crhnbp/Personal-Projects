@@ -22,10 +22,10 @@ public class Percolation {
     
     public void open(int i, int j) {
         inBounds(i, j);
+        int currentSite = getInd(i, j); 
         if (isOpen(i, j)) {
             return;
         } else {
-        int currentSite = getInd(i, j); 
         this.site[currentSite] = 1;
         }
 
@@ -34,7 +34,7 @@ public class Percolation {
             uf1.union(currentSite, top);
         }
         
-        if (i == n) {
+        if (i == x) {
             uf1.union(currentSite, bottom);
         }
         
@@ -45,7 +45,7 @@ public class Percolation {
             }
         }
         
-        if (i < n) {
+        if (i < x) {
             if (isOpen(i + 1, j)) {
                 uf.union(currentSite, getInd(i + 1, j));
                 uf1.union(currentSite, getInd(i + 1, j));
@@ -59,7 +59,7 @@ public class Percolation {
             }
         }
         
-        if (j < n) {
+        if (j < x) {
             if (isOpen(i, j + 1)) {
                 uf.union(currentSite, getInd(i, j + 1));
                 uf1.union(currentSite, getInd(i, j + 1));
@@ -68,14 +68,14 @@ public class Percolation {
     }
     
     private boolean inBounds(int i, int j) {
-        if (i < 1 || i > n || j < 1 || j > n) {
+        if (i < 1 || i > x || j < 1 || j > x) {
             throw new IndexOutOfBoundsException();
         } else {
         return true;
     }
 }
 
-    public boolean isOpen(int i, int j)    {
+    public boolean isOpen(int i, int j) {
         inBounds(i, j);
         if (site[getInd(i, j)] == 1){
             return true;
@@ -83,8 +83,7 @@ public class Percolation {
         return false;
     }
     
-    public boolean isFull(int i, int j)    
-    {
+    public boolean isFull(int i, int j) {
         inBounds(i, j);
         if (!isOpen(i, j)) {
             return false;
