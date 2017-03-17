@@ -3,7 +3,7 @@ import java.util.Iterator;
 import java.util.HashSet;
 import java.util.Set;
 
-public class MyHashMap<K, V> implements Map61B<K, V> {
+public abstract class MyHashMap<K, V> implements Map61B<K, V> {
 	
     private static class Entry<K, V> {
 		final K key;
