@@ -61,13 +61,13 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
         hashmap = newHash;
 
         for (int i = 0; i < oldbuckets; i += 1) {
-        	Entry<K, V> head = oldhashMap[i];
+        	Entry<K, V> head = oldHash[i];
         	while(head != null) {
         		put(head.key, head.val);
         		head = head.next;
         	}
         }
-		oldhashMap = null;
+		oldHash = null;
     }
 
     private int hash(K key) {
