@@ -88,7 +88,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void clear() {
     	size = 0;
     	hashmap = new Entry[buckets];
-    	set = new HashSet<K>();
+    	st = new HashSet<K>();
     }
 
     public boolean containsKey(K key) {
@@ -195,5 +195,34 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
 		return value;
 
     }
+
+    @Override
+    public V remove(K key, V value) {
+		int hashcode = hash(key);
+		Entry<K, V> node = hashmap[hashcode];
+		if (node == null) {
+			return null;
+		}
+		V res = null;
+		if (node.key.equals(key) && node.val.equals(value)) {
+			hashmap[hashcode] = node.next;
+			size -= 1;
+			res = value;
+			set.remove(key);
+		} else {
+			while (node.next != null) {
+				if (node.next.key.equals(key) && node.next.val.equals(value)) {
+					node.next = node.next.next;
+					size -= 1;
+					res = value;
+					set.remove(key);
+					break;
+				}
+				node = node.next;
+			}
+		}
+		return res;
+    }
+
 
 }
