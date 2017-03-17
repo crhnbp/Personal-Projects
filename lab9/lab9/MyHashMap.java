@@ -88,7 +88,7 @@ public class MyHashMap<K, V> implements Map61B<K, V> {
     public void clear() {
     	size = 0;
     	hashmap = new Entry[buckets];
-    	st = new HashSet<K>();
+    	set = new HashSet<K>();
     }
 
     public boolean containsKey(K key) {
