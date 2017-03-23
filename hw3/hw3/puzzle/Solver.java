@@ -7,18 +7,18 @@ import java.util.ArrayList;
 public class Solver {
     private int moves;
     private MinPQ<SearchNode> gameTree;
-    private ArrayList<Board> chosenPath;
+    private ArrayList<WorldState> chosenPath;
     // private HashSet<Board> boardSaver;
     // private HashMap<Board, Integer> boardSaver;
 
     private class SearchNode implements Comparable<SearchNode> {
         // The input of priority queue
-        private Board board;
+        private WorldState board;
         private int moves;
         private int priority;
         private SearchNode prevNode;
         
-        public SearchNode(Board input, int i, SearchNode prev) {
+        public SearchNode(WorldState input, int i, SearchNode prev) {
             board = input;
             moves = i;
             prevNode = prev;
@@ -32,10 +32,10 @@ public class Solver {
         public int compareTo(SearchNode other) {
             return Integer.compare(this.priority(), other.priority());
         }
-        public Board board() {
+        public WorldState board() {
             return this.board;
         }
-        public Board prevBoard() {
+        public WorldState prevBoard() {
             if (prevNode == null) {
                 return null;
             } else {
@@ -48,16 +48,16 @@ public class Solver {
         public int moves() {
             return this.moves;
         }
-        public ArrayList<Board> chosenPath() {
+        public ArrayList<WorldState> chosenPath() {
             return chosenPath;
         }
     }
     // Constructor
-    public Solver(Board initial) {
+    public Solver(WorldState initial) {
         // First, insert the initial search node (the initial board, 
         // 0 moves, and a null previous search node) into a priority queue.
         gameTree = new MinPQ<SearchNode>();
-        chosenPath = new ArrayList<Board>();
+        chosenPath = new ArrayList<WorldState>();
         // Save the path
         chosenPath.add(0, initial);
         int moveCount = 0;
@@ -70,9 +70,9 @@ public class Solver {
             int pri1 = gameTree.min().priority();
 
             SearchNode current = gameTree.delMin();
-            Board currentBoard = current.board();
-            Board prevBoard = current.prevBoard();
-            for (Board x : BoardUtils.neighbors(currentBoard)) {
+            WorldState currentBoard = current.board();
+            WorldState prevBoard = current.prevBoard();
+            for (Board x : currentBoard.neighbors()) {
                 if (!x.equals(prevBoard)) {
                     SearchNode newNode = new SearchNode(x, current.moves() + 1, current);
                     gameTree.insert(newNode);
@@ -94,7 +94,7 @@ public class Solver {
         return chosenPath.size() - 1;
     }
 
-    public Iterable<Board> solution() {
+    public Iterable<WorldState> solution() {
         // Return the sequence of Boards from the initial board to the solution
         // Use the node to traverse back to its parent
         return this.chosenPath;
