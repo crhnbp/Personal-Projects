@@ -8,7 +8,7 @@ public class Solver {
     
     private int moves;
     private MinPQ<SearchNode> gameTree;
-    private ArrayList<Board> chosenPath;
+    private ArrayList<WorldState> chosenPath;
     // private HashSet<Board> boardSaver;
     // private HashMap<Board, Integer> boardSaver;
 
@@ -18,7 +18,7 @@ public class Solver {
         private int priority;
         private SearchNode prevNode;
         
-        public SearchNode(Board input, int i, SearchNode prev) {
+        public SearchNode(WorldState input, int i, SearchNode prev) {
             board = input;
             moves = i;
             prevNode = prev;
@@ -47,14 +47,14 @@ public class Solver {
         public int moves() {
             return this.moves;
         }
-        public ArrayList<Board> chosenPath() {
+        public ArrayList<WorldState> chosenPath() {
             return chosenPath;
         }
     }
 
     public Solver(WorldState initial) {
         gameTree = new MinPQ<SearchNode>();
-        chosenPath = new ArrayList<Board>();
+        chosenPath = new ArrayList<WorldState>();
         chosenPath.add(0, initial);
         int moveCount = 0;
         SearchNode initialNode = new SearchNode(initial, moveCount, null);
@@ -99,7 +99,7 @@ public class Solver {
                 tiles[i][j] = in.readInt();
             }
         }
-        Board initial = new Board(tiles);
+        WorldState initial = new Board(tiles);
         Solver solver = new Solver(initial);
         StdOut.println("Minimum number of moves = " + solver.moves());
         for (Board board : solver.solution()) {
