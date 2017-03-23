@@ -73,6 +73,9 @@ public class Board implements WorldState {
     public int manhattan() {
         return this.manhattan;
     }
+    public int estimatedDistanceToGoal() {
+        return this.manhattan;
+    }
     public boolean isGoal() {
         if (this == null) {
             return false;
