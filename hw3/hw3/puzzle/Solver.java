@@ -1,4 +1,4 @@
-package hw4.puzzle;
+package hw3.puzzle;
 import edu.princeton.cs.algs4.In;
 import edu.princeton.cs.algs4.StdOut;
 import edu.princeton.cs.algs4.MinPQ;
