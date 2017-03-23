@@ -12,12 +12,11 @@ public class Board implements WorldState {
     private int manhattan = -1;
 
     public Board(int[][] tiles) {
-        int[][] temp = tiles;
         size = tiles.length;
         board = new int[size][size];
         for (int i = 0; i < size; i += 1) {
             for (int j = 0; j < size; j += 1) {
-                board[i][j] = temp[i][j];
+                board[i][j] = tiles[i][j];
             }
         }
         int ham = 0;
