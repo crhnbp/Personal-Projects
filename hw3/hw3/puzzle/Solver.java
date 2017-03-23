@@ -22,7 +22,7 @@ public class Solver {
             board = input;
             moves = i;
             prevNode = prev;
-            priority = moves + board.manhattan();
+            priority = moves + board.estimatedDistanceToGoal();
         }
         public int priority() {
             return this.priority;

@@ -10,6 +10,7 @@ public class Board implements WorldState {
     private int size;
     private int hamming;
     private int manhattan = -1;
+    private int BLANK = 0;
 
     public Board(int[][] tiles) {
         size = tiles.length;
