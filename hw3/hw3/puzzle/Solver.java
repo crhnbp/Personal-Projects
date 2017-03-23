@@ -13,7 +13,7 @@ public class Solver {
     // private HashMap<Board, Integer> boardSaver;
 
     private class SearchNode implements Comparable<SearchNode> {
-        private Board board;
+        private WorldState board;
         private int moves;
         private int priority;
         private SearchNode prevNode;
@@ -66,7 +66,7 @@ public class Solver {
             SearchNode current = gameTree.delMin();
             Board currentBoard = current.board();
             Board prevBoard = current.prevBoard();
-            for (Board x : BoardUtils.neighbors(currentBoard)) {
+            for (WorldState x : Board.neighbors(currentBoard)) {
                 if (!x.equals(prevBoard)) {
                     SearchNode newNode = new SearchNode(x, current.moves() + 1, current);
                     gameTree.insert(newNode);
