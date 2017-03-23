@@ -52,7 +52,7 @@ public class Solver {
         }
     }
 
-    public Solver(Board initial) {
+    public Solver(WorldState initial) {
         gameTree = new MinPQ<SearchNode>();
         chosenPath = new ArrayList<Board>();
         chosenPath.add(0, initial);
