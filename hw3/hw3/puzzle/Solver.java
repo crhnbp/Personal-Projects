@@ -86,7 +86,7 @@ public class Solver {
         return chosenPath.size() - 1;
     }
 
-    public Iterable<Board> solution() {
+    public Iterable<WorldState> solution() {
         return this.chosenPath;
     }
 
