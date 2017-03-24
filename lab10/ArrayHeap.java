@@ -1,5 +1,6 @@
 import org.junit.Test;
 import static org.junit.Assert.*;
+import java.lang.reflect.Array;
 
 /**
  * A Generic heap class. Unlike Java's priority queue, this heap doesn't just
@@ -8,11 +9,11 @@ import static org.junit.Assert.*;
  * will be useful later on in the class...
  */
 public class ArrayHeap<T> implements ExtrinsicPQ<T> {
-    private T[] contents;
+    private Node[] contents;
     private int size;
 
     public ArrayHeap() {
-        contents = new ArrayHeap.Node[16];
+        contents = (Node[]) Array.newInstance(Node.class, 16);
         contents[0] = null;
         size = 0;
     }
