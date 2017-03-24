@@ -35,7 +35,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     private static int rightIndex(int i) {
         int x = 2 * i + 1;
-        if (x > contents.size()) {
+        if (x > size) {
             // throw new IndexOutOfBoundsException();
             return 0;
         } else {
@@ -64,7 +64,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (!inBounds(index)) {
             return null;
         }
-        return contents[index];
+        return contents[index].item();
     }
 
     /**
@@ -167,9 +167,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T peek() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Priority queue underflow");
-        }
+        
         return getNode(1);
     }
 
@@ -184,9 +182,6 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public T removeMin() {
-        if (isEmpty()) {
-            throw new NoSuchElementException("Priority queue underflow");
-        }
         swap(1, size);
         Node min = getNode(1);
         sink(1);
@@ -213,14 +208,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
      */
     @Override
     public void changePriority(T item, double priority) {
-        ArrayHeap temp = new ArrayHeap();
-        for (Node x : contents) {
-            if (x.item().equals(item)) {
-                x = new Node(item, priority);
-            }
-            temp.insert(this.removeMin().item(), this.removeMin().priority());
-        }
-        this.contents = temp.contents;
+        return null;
     }
 
     /**
