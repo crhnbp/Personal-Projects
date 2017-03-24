@@ -30,12 +30,12 @@ public class Board implements WorldState {
         }
         hamming = ham - 1;
         int man = 0;
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                int now = tileAt(i, j);
-                if (now != 0) {
-                    int row = (now - 1) / size;
-                    int col = (now - 1) % size;
+        for (int i = 0; i < size; i += 1) {
+            for (int j = 0; j < size; j += 1) {
+                int curr = tileAt(i, j);
+                if (curr != 0) {
+                    int row = (curr - 1) / size;
+                    int col = (curr - 1) % size;
                     man += Math.abs(i - row) + Math.abs(j - col);
                 }
             }
