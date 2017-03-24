@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
  * will be useful later on in the class...
  */
 public class ArrayHeap<T> implements ExtrinsicPQ<T> {
-    private Node[] contents;
+    private T[] contents;
     private int size;
 
     public ArrayHeap() {
@@ -64,7 +64,7 @@ public class ArrayHeap<T> implements ExtrinsicPQ<T> {
         if (!inBounds(index)) {
             return null;
         }
-        return contents[index].item();
+        return contents[index];
     }
 
     /**
