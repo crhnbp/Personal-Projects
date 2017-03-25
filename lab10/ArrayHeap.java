@@ -9,8 +9,8 @@ import java.lang.reflect.Array;
  * will be useful later on in the class...
  */
 public class ArrayHeap<T> implements ExtrinsicPQ<T> {
-    private Node[] contents;
-    private int size;
+    private static Node[] contents;
+    private static int size;
 
     public ArrayHeap() {
         contents = (Node[]) Array.newInstance(Node.class, 16);
