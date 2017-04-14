@@ -81,6 +81,5 @@ public class MergeSort {
         q1.enqueue(items.dequeue());
         return mergeSortedQueues(mergeSort(q1), mergeSort(items));
     }
-}
 
 }
