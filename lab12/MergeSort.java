@@ -40,7 +40,7 @@ public class MergeSort {
             Queue<Item> temp = new Queue();
             temp.enqueue(items.dequeue());
             queueOfQueue.enqueue(temp);
-            }
+        }
         return queueOfQueue;
     }
 
