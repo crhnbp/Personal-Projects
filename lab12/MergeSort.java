@@ -82,3 +82,19 @@ public class MergeSort {
         return mergeSortedQueues(mergeSort(q1), mergeSort(items));
     }
 }
+
+	public static void main(String[] args) {
+        // Create a Queue of unsorted objects and print that queue
+        Queue<Integer> unsorted = new Queue<Integer>();
+        unsorted.enqueue(5);
+        unsorted.enqueue(2);
+        unsorted.enqueue(4);
+        unsorted.enqueue(8);
+        unsorted.enqueue(3);
+        System.out.println(unsorted);
+        Queue<Integer> sorted = MergeSort.mergeSort(unsorted);
+        System.out.println(unsorted);
+        System.out.println(sorted);
+
+    }
+}
