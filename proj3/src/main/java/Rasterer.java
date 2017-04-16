@@ -91,9 +91,7 @@ public class Rasterer {
             rasteredImageParams.put("depth", list.get(0).getDepth());
             rasteredImageParams.put("query_success", true);
         }
-        MapServer server = new MapServer();
-        server.initialize();
-        return server.writeImagesToOutputStream(rasteredImageParams, os);
+        return rasteredImageParams;
     }
 
 }
