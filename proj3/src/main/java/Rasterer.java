@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 public class Rasterer {
 	public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
             ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
+    public static final int TILE_SIZE = 256;
     // Recommended: QuadTree instance variable. You'll need to make
     //              your own QuadTree since there is no built-in quadtree in Java.
 
@@ -64,6 +65,7 @@ public class Rasterer {
     static QuadTree mapTree = new QuadTree(ROOT_ULLAT, ROOT_ULLON, ROOT_LRLAT, ROOT_LRLON, "root");
 
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
+    	OutputStream os;
         HashMap<String, Object> rasteredImageParams = new HashMap<>();
         // Call the QuadTree class and build the QuadTree
         // Go to the specified level and retrieve the proper parameters
