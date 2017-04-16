@@ -65,7 +65,6 @@ public class Rasterer {
     static QuadTree mapTree = new QuadTree(ROOT_ULLAT, ROOT_ULLON, ROOT_LRLAT, ROOT_LRLON, "root");
 
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-    	OutputStream os;
         HashMap<String, Object> rasteredImageParams = new HashMap<>();
         // Call the QuadTree class and build the QuadTree
         // Go to the specified level and retrieve the proper parameters
@@ -81,24 +80,6 @@ public class Rasterer {
         int row = mapTree.getRow();
         int col = mapTree.getCol();
         // Get all the tiles and concatenate them into one single BufferedImage
-        try {
-            BufferedImage im = new BufferedImage(col * TILE_SIZE, row * TILE_SIZE, BufferedImage.TYPE_INT_RGB);
-            int x = 0;
-            int y = 0;
-            Graphics g = im.getGraphics();
-//             Loop through the list of graphs
-            int counter = 0;
-            for (QuadTree.QTreeNode node : list) {
-                BufferedImage bi = ImageIO.read(new File(node.getFileName()));
-                g.drawImage(bi, x, y, null);
-                x += bi.getWidth();
-                counter += 1;
-                if (counter == col) {
-                    x = 0;
-                    y += bi.getHeight();
-                    counter = 0;
-                }
-            }
             rasteredImageParams.put("raster_ul_lon", list.get(0).getULLON());
             rasteredImageParams.put("raster_ul_lat", list.get(0).getULLAT());
             rasteredImageParams.put("raster_lr_lat", list.get(list.size() - 1).getLRLAT());
@@ -107,11 +88,10 @@ public class Rasterer {
             rasteredImageParams.put("raster_height", row * TILE_SIZE);
             rasteredImageParams.put("depth", list.get(0).getDepth());
             rasteredImageParams.put("query_success", true);
-            ImageIO.write(im, "png", os);
-        } catch (IOException io) {
-            System.out.println("not found");
         }
-        return rasteredImageParams;
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
+        MapServer server = new initialize();
+        return server.writeImagesToOutputStream(rasteredImageParams, os);
     }
 
 }
