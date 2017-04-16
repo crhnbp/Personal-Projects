@@ -90,8 +90,7 @@ public class Rasterer {
             rasteredImageParams.put("query_success", true);
         }
         ByteArrayOutputStream os = new ByteArrayOutputStream();
-        MapServer server = new initialize();
-        return server.writeImagesToOutputStream(rasteredImageParams, os);
+        return writeImagesToOutputStream(rasteredImageParams, os);
     }
 
 }
