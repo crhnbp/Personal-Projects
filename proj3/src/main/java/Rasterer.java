@@ -82,15 +82,14 @@ public class Rasterer {
         int row = mapTree.getRow();
         int col = mapTree.getCol();
         // Get all the tiles and concatenate them into one single BufferedImage
-            rasteredImageParams.put("raster_ul_lon", list.get(0).getULLON());
-            rasteredImageParams.put("raster_ul_lat", list.get(0).getULLAT());
-            rasteredImageParams.put("raster_lr_lat", list.get(list.size() - 1).getLRLAT());
-            rasteredImageParams.put("raster_lr_lon", list.get(list.size() - 1).getLRLON());
-            rasteredImageParams.put("raster_width", col * TILE_SIZE);
-            rasteredImageParams.put("raster_height", row * TILE_SIZE);
-            rasteredImageParams.put("depth", list.get(0).getDepth());
-            rasteredImageParams.put("query_success", true);
-        }
+        rasteredImageParams.put("raster_ul_lon", list.get(0).getULLON());
+        rasteredImageParams.put("raster_ul_lat", list.get(0).getULLAT());
+        rasteredImageParams.put("raster_lr_lat", list.get(list.size() - 1).getLRLAT());
+        rasteredImageParams.put("raster_lr_lon", list.get(list.size() - 1).getLRLON());
+        rasteredImageParams.put("raster_width", col * TILE_SIZE);
+        rasteredImageParams.put("raster_height", row * TILE_SIZE);
+        rasteredImageParams.put("depth", list.get(0).getDepth());
+        rasteredImageParams.put("query_success", true);
         return rasteredImageParams;
     }
 
