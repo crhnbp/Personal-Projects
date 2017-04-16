@@ -65,6 +65,8 @@ public class Rasterer {
     static QuadTree mapTree = new QuadTree(ROOT_ULLAT, ROOT_ULLON, ROOT_LRLAT, ROOT_LRLON, "root");
 
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
+
+        ByteArrayOutputStream os = new ByteArrayOutputStream();
         HashMap<String, Object> rasteredImageParams = new HashMap<>();
         // Call the QuadTree class and build the QuadTree
         // Go to the specified level and retrieve the proper parameters
@@ -89,8 +91,9 @@ public class Rasterer {
             rasteredImageParams.put("depth", list.get(0).getDepth());
             rasteredImageParams.put("query_success", true);
         }
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
-        return writeImagesToOutputStream(rasteredImageParams, os);
+        MapServer server = new MapServer();
+        server.initialize();
+        return server.writeImagesToOutputStream(rasteredImageParams, os);
     }
 
 }
