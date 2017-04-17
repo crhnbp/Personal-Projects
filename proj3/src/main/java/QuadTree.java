@@ -1,3 +1,6 @@
+/**
+ * Created by haoliangsky on 4/8/16.
+ */
 import java.util.ArrayList;
 
 public class QuadTree {
@@ -81,13 +84,11 @@ public class QuadTree {
     // The x input is the root of the tree
     public ArrayList<QTreeNode> findRasterBox(QTreeNode x, double ullat, double ullon, double lrlat, double lrlon, double queryDistancePerPixel) {
         int level = 0;
-        double tileDPP = 0.00034332275390625;
         while (level <= MAX_DEPTH) {
-
+            double tileDPP = (this.root.getLRLON() - this.root.getULLON()) / (SIZE * Math.pow(2, level));
             if (tileDPP <= queryDistancePerPixel) {
                 break;
             }
-            tileDPP = tileDPP / 2;
             level += 1;
         }
         if (level > MAX_DEPTH) {
@@ -137,7 +138,6 @@ public class QuadTree {
                 tile = tile.East;
             }
         }
-        list.get(1).depth = level;
         col = list.size() / row;
         return list;
     }
