@@ -100,6 +100,16 @@ public class Rasterer {
         		count += 1;
         	}
         }
+        int level = 0;
+        double tileDPP = 0.00034332275390625;
+        while (level <= MAX_DEPTH) {
+
+            if (tileDPP <= queryDistancePerPixel) {
+                break;
+            }
+            tileDPP = tileDPP / 2;
+            level += 1;
+        }
         rasteredImageParams.put("render_grid", ans);
         rasteredImageParams.put("raster_ul_lon", list.get(0).getULLON());
         rasteredImageParams.put("raster_ul_lat", list.get(0).getULLAT());
@@ -107,7 +117,7 @@ public class Rasterer {
         rasteredImageParams.put("raster_lr_lon", list.get(list.size() - 1).getLRLON());
         rasteredImageParams.put("raster_width", col * TILE_SIZE);
         rasteredImageParams.put("raster_height", row * TILE_SIZE);
-        rasteredImageParams.put("depth", list.get(0).getDepth());
+        rasteredImageParams.put("depth", level);
         rasteredImageParams.put("query_success", true);
         return rasteredImageParams;
     }
