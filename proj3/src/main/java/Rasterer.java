@@ -84,19 +84,19 @@ public class Rasterer {
         // Get all the tiles and concatenate them into one single BufferedImage
         //
         int a = 0;
-        double x = list.get(0).getLat();
+        double x = list.get(0).getULLAT();
         for (QuadTree.QTreeNode node : list) {
-        	if node.getLat().equals(x) {
+        	if (node.getLat().equals(x)) {
         		a++;
         	}
         	
         }
         String[][] ans = new String[list.size() / a][a];
        	//
-        int count = 0
+        int count = 0;
         for (int i = 0; i < list.size() / a; i++) {
         	for (int k = 0; k < a; k++) {
-        		ans[k][i] = list.get(count);
+        		ans[k][i] = list.get(count).getFileName();
         		count += 1;
         	}
         }
