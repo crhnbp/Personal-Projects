@@ -86,7 +86,7 @@ public class Rasterer {
         int a = 0;
         double x = list.get(0).getULLAT();
         for (QuadTree.QTreeNode node : list) {
-        	if (node.getLat().equals(x)) {
+        	if (node.getULLAT().equals(x)) {
         		a++;
         	}
         	
