@@ -102,7 +102,7 @@ public class Rasterer {
         }
         int level = 0;
         double tileDPP = 0.00034332275390625;
-        while (level <= MAX_DEPTH) {
+        while (level <= 7) {
 
             if (tileDPP <= queryDistancePerPixel) {
                 break;
