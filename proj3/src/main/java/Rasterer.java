@@ -96,7 +96,7 @@ public class Rasterer {
         int count = 0;
         for (int i = 0; i < list.size() / a; i++) {
         	for (int k = 0; k < a; k++) {
-        		ans[k][i] = list.get(count).getFileName();
+        		ans[i][k] = list.get(count).getFileName();
         		count += 1;
         	}
         }
