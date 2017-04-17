@@ -107,7 +107,7 @@ public class Rasterer {
         rasteredImageParams.put("raster_lr_lon", list.get(list.size() - 1).getLRLON());
         rasteredImageParams.put("raster_width", col * TILE_SIZE);
         rasteredImageParams.put("raster_height", row * TILE_SIZE);
-        rasteredImageParams.put("depth", list.get(0).getDepth());
+        rasteredImageParams.put("depth", list.get(1).getDepth());
         rasteredImageParams.put("query_success", true);
         return rasteredImageParams;
     }
