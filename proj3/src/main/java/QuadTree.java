@@ -137,6 +137,7 @@ public class QuadTree {
                 tile = tile.East;
             }
         }
+        list.get(0).getDepth() = level;
         col = list.size() / row;
         return list;
     }
