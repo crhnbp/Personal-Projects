@@ -6,7 +6,7 @@ public class QuadTree {
     public final double SIZE = 256;
     public final String IMG_ROOT =  "img/";
     public final String IMG_END = ".png";
-    public int MAX_DEPTH = 7;
+    public final int MAX_DEPTH = 7;
     public static int row = 0;
     public static int col = 0;
 
@@ -92,7 +92,6 @@ public class QuadTree {
         if (level > MAX_DEPTH) {
             level = MAX_DEPTH;
         }
-        MAX_DEPTH = level;
         // Find the node that contains the upper left point and take the East and South
         x = this.root;
         while(x.getDepth() < level) {
