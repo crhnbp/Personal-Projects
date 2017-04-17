@@ -84,7 +84,7 @@ public class QuadTree {
             ullon = -122.2998046875;
         }
         if (lrlon > -122.2119140625) {
-            ullat = -122.2119140625;
+            lrlon = -122.2119140625;
         }
         int level = 0;
         double tileDPP = 0.00034332275390625;
