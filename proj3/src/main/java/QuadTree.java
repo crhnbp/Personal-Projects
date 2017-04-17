@@ -94,7 +94,8 @@ public class QuadTree {
         }
         // Find the node that contains the upper left point and take the East and South
         x = this.root;
-        while(x.getDepth() < level) {
+        x.depth = level;
+        while(0 < level) {
             if (x.NW.contains(ullat, ullon)) {
                 x = x.NW;
             } else if (x.NE.contains(ullat, ullon)) {
