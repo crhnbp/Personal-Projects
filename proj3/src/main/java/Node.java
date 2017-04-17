@@ -2,7 +2,6 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Node {
-    // This class of object may be used in a graph as the intersections
     long id;
     double latitude;
     double longtitude;
@@ -18,9 +17,11 @@ public class Node {
         neighbors = new ArrayList<>();
         distances = new ArrayList<>();
     }
+
     public boolean hasNeighbor() {
         return neighbors.size() > 0;
     }
+
     public void addNeighbor(Node neighbor) {
         if (this.id != neighbor.id) {
             neighbors.add(neighbor);
@@ -32,9 +33,11 @@ public class Node {
         double horizontal = Math.pow(n2.getLon() - n1.getLon(), 2);
         return Math.pow(vertical + horizontal, 0.5);
     }
+
     public ArrayList<Node> getNeighbors() {
         return this.neighbors;
     }
+
     public ArrayList<Double> getDistances() {
         return this.distances;
     }
@@ -42,9 +45,11 @@ public class Node {
     public double getLat() {
         return this.latitude;
     }
+
     public double getLon() {
         return this.longtitude;
     }
+    
     public String getName() {
         return this.name;
     }

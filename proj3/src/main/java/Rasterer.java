@@ -1,14 +1,10 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.image.BufferedImage;
 import java.awt.Graphics;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
 import java.nio.Buffer;
 import java.util.*;
 import java.io.File;
-import javax.imageio.ImageIO;
 
 /**
  * This class provides all code necessary to take a query box and produce
@@ -65,24 +61,17 @@ public class Rasterer {
     static QuadTree mapTree = new QuadTree(ROOT_ULLAT, ROOT_ULLON, ROOT_LRLAT, ROOT_LRLON, "root");
 
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
-
-        ByteArrayOutputStream os = new ByteArrayOutputStream();
         HashMap<String, Object> rasteredImageParams = new HashMap<>();
-        // Call the QuadTree class and build the QuadTree
-        // Go to the specified level and retrieve the proper parameters
-        double ullat = params.get("ullat");
+        double lrlon = params.get("lrlon");
         double ullon = params.get("ullon");
         double lrlat = params.get("lrlat");
-        double lrlon = params.get("lrlon");
+        double ullat = params.get("ullat");
         double windowWidth = params.get("w");
         double windowHeight = params.get("h");
         double queryDistancePerPixel = (lrlon - ullon) / windowWidth;
-        // We want the tileDistancePerPixel to be smaller than queryDistancePerPixel
-        ArrayList<QuadTree.QTreeNode> list =  mapTree.findRasterBox(mapTree.getRoot(), ullat, ullon, lrlat, lrlon, queryDistancePerPixel);
+        ArrayList<QuadTree.QTreeNode> list =  mapTree.findBox(mapTree.getRoot(), ullat, ullon, lrlat, lrlon, queryDistancePerPixel);
         int row = mapTree.getRow();
         int col = mapTree.getCol();
-        // Get all the tiles and concatenate them into one single BufferedImage
-        //
         int a = 0;
         double x = list.get(0).getULLAT();
         for (QuadTree.QTreeNode node : list) {
@@ -92,7 +81,6 @@ public class Rasterer {
         	
         }
         String[][] ans = new String[list.size() / a][a];
-       	//
         int count = 0;
         for (int i = 0; i < list.size() / a; i++) {
         	for (int k = 0; k < a; k++) {

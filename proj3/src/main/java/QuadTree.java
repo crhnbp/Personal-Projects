@@ -1,22 +1,18 @@
 import java.util.ArrayList;
 
 public class QuadTree {
-    // Use recursion to make the QuadTree for the representation
     private QTreeNode root;
     public final double SIZE = 256;
-    public final String IMG_ROOT =  "img/";
-    public final String IMG_END = ".png";
     public final int MAX_DEPTH = 7;
+    public final String PREF =  "img/";
+    public final String SUF = ".png";
     public static int row = 0;
     public static int col = 0;
 
-    // Constructor fo recursively built up the QuadTree
     public QuadTree(double ullat, double ullon, double lrlat, double lrlon, String rootFile) {
-        // Set up the root node
         root = new QTreeNode(null, ullat, ullon, lrlat, lrlon, rootFile);
-        root.South = null;
         root.East = null;
-        // Go all the way down to construct the entire tree
+        root.South = null;
         root.SE = insert(root, (ullat + lrlat) / 2.0, (ullon + lrlon) / 2.0, lrlat, lrlon, "4");
         root.SW = insert(root, (ullat + lrlat) / 2.0, ullon, lrlat, (ullon + lrlon) / 2.0, "3");
         root.NE = insert(root, ullat, (ullon + lrlon) / 2.0, (ullat + lrlat) / 2.0, lrlon, "2");
@@ -29,14 +25,13 @@ public class QuadTree {
         root.SW.South = null;
         root.SE.East = null;
         root.SE.South = null;
-        setPointer(root.SE);
-        setPointer(root.SW);
-        setPointer(root.NE);
         setPointer(root.NW);
+        setPointer(root.NE);
+        setPointer(root.SW);
+        setPointer(root.SE);
+        
     }
-    // This method sets the South and East pointers
     public void setPointer(QTreeNode x) {
-        // Give the relation of the first four
         x.NW.East = x.NE;
         x.NW.South = x.SW;
         x.NE.South = x.SE;
@@ -61,25 +56,24 @@ public class QuadTree {
         setPointer(x.SW);
         setPointer(x.SE);
     }
-    // This method insert a QTreeNode doubleo the correct place, given a filename
+
     public QTreeNode insert(QTreeNode x, double ullat, double ullon, double lrlat, double lrlon, String filename) {
         if (filename.length() == MAX_DEPTH) {
             return new QTreeNode(x, ullat, ullon, lrlat, lrlon, filename);
         }
         QTreeNode node = new QTreeNode(x, ullat, ullon, lrlat, lrlon, filename);
-        node.SE = insert(node, (ullat + lrlat) / 2.0, (ullon + lrlon) / 2.0, lrlat, lrlon, filename + "4");
+        node.NW = insert(node, ullat, ullon, (ullat + lrlat) / 2.0, (ullon + lrlon) / 2.0, filename + "1");
         node.NE = insert(node, ullat, (ullon + lrlon) / 2.0, (ullat + lrlat) / 2.0, lrlon, filename + "2");
         node.SW = insert(node, (ullat + lrlat) / 2.0, ullon, lrlat, (ullon + lrlon) / 2.0, filename + "3");
-        node.NW = insert(node, ullat, ullon, (ullat + lrlat) / 2.0, (ullon + lrlon) / 2.0, filename + "1");
+        node.SE = insert(node, (ullat + lrlat) / 2.0, (ullon + lrlon) / 2.0, lrlat, lrlon, filename + "4");
         node.NW.East = node.NE;
         node.NW.South = node.SW;
         node.NE.South = node.SE;
         node.SW.East = node.SE;
         return node;
     }
-    // A traversal method that returns the QTreeNodes that cover the query box
-    // The x input is the root of the tree
-    public ArrayList<QTreeNode> findRasterBox(QTreeNode x, double ullat, double ullon, double lrlat, double lrlon, double queryDistancePerPixel) {
+
+    public ArrayList<QTreeNode> findBox(QTreeNode x, double ullat, double ullon, double lrlat, double lrlon, double queryDistancePerPixel) {
         if (ullon < -122.2998046875) {
             ullon = -122.2998046875;
         }
@@ -98,7 +92,6 @@ public class QuadTree {
         if (level > MAX_DEPTH) {
             level = MAX_DEPTH;
         }
-        // Find the node that contains the upper left point and take the East and South
         x = this.root;
         while(x.getDepth() < level) {
             if (x.NW.contains(ullat, ullon)) {
@@ -112,15 +105,13 @@ public class QuadTree {
             } else {
                 break;
             }
-        } // Now x should be the node at the upper left corner at the proper level, then go east and south to fill the query box
-        // Use the box's contains method to see whether a node is in it:
-        ArrayList<QTreeNode> tempList = new ArrayList<>();
+        } 
         QTreeNode tempNode = x;
-        // Vertical
+        ArrayList<QTreeNode> tempList = new ArrayList<>()
         //if (level == 0) {
-            //ArrayList<QTreeNode> initial = new ArrayList<>();
-            //initial.add(this.getRoot());
-            //return initial;
+            //ArrayList<QTreeNode> init = new ArrayList<>();
+            //init.add(this.getRoot());
+            //return init;
         //}
         while (tempNode != null) {
             if (tempNode.ULLAT > lrlat) {
@@ -157,23 +148,20 @@ public class QuadTree {
     }
 
     public class QTreeNode implements Comparable<QTreeNode>{
-        // The dimensional attributes
+        private String fileName;
         private double ULLAT;
         private double ULLON;
         private double LRLAT;
         private double LRLON;
         private int depth;
-        private String fileName;
         public QTreeNode parent;
-        public QTreeNode NW; // Top-left
-        public QTreeNode NE; // Top-right
-        public QTreeNode SE; // Bottom-right
-        public QTreeNode SW; // Bottom-left
-        // For later traverse
+        public QTreeNode NW; 
+        public QTreeNode NE; 
+        public QTreeNode SE; 
+        public QTreeNode SW; 
         public QTreeNode East = null;
         public QTreeNode South = null;
 
-        // The constructor that takes in argument and make a node for the QuadTree
         public QTreeNode(QTreeNode x, double ullat, double ullon, double lrlat, double lrlon, String filename) {
             this.ULLAT = ullat;
             this.ULLON = ullon;
@@ -185,12 +173,11 @@ public class QuadTree {
             } else {
                 this.depth = filename.length();
             }
-            this.fileName = IMG_ROOT + filename + IMG_END;
+            this.fileName = PREF + filename + SUF;
         }
         public boolean hasChild() {
             return this.getDepth() != MAX_DEPTH;
         }
-        // Return true if the QTreeNode contains the coordinate
         public boolean contains(double ullat, double ullon) {
             if (this.ULLON <= ullon && ullon < this.LRLON && this.ULLAT >= ullat && ullat > this.LRLAT) {
                 return true;
@@ -222,16 +209,15 @@ public class QuadTree {
         public QTreeNode NE() {
             return this.NE;
         }
-        public QTreeNode SE() {
-            return this.SE;
-        }
         public QTreeNode SW() {
             return this.SW;
+        }
+        public QTreeNode SE() {
+            return this.SE;
         }
         public QTreeNode parent() {
             return this.parent;
         }
-        // Implement a compareTo method to tell where a QTreeNode should go
         public int compareTo(QTreeNode other) {
             return Double.compare(this.ULLAT, other.ULLAT);
         }
