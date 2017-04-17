@@ -82,6 +82,25 @@ public class Rasterer {
         int row = mapTree.getRow();
         int col = mapTree.getCol();
         // Get all the tiles and concatenate them into one single BufferedImage
+        //
+        int a = 0;
+        double x = list.get(0).getLat();
+        for (QuadTree.QTreeNode node : list) {
+        	if node.getLat().equals(x) {
+        		a++;
+        	}
+        	
+        }
+        String[][] ans = new String[list.size() / a][a];
+       	//
+        int count = 0
+        for (int i = 0; i < list.size() / a; i++) {
+        	for (int k = 0; k < a; k++) {
+        		ans[k][i] = list.get(count);
+        		count += 1;
+        	}
+        }
+        rasteredImageParams.put("render_grid", ans);
         rasteredImageParams.put("raster_ul_lon", list.get(0).getULLON());
         rasteredImageParams.put("raster_ul_lat", list.get(0).getULLAT());
         rasteredImageParams.put("raster_lr_lat", list.get(list.size() - 1).getLRLAT());
