@@ -80,10 +80,10 @@ public class QuadTree {
     // A traversal method that returns the QTreeNodes that cover the query box
     // The x input is the root of the tree
     public ArrayList<QTreeNode> findRasterBox(QTreeNode x, double ullat, double ullon, double lrlat, double lrlon, double queryDistancePerPixel) {
-        if (ullon < -122.2998046875) {
+        if (lrlon < -122.2998046875) {
             ullon = -122.2998046875;
         }
-        if (ullat > -122.2119140625) {
+        if (ullon > -122.2119140625) {
             ullat = -122.2119140625;
         }
         int level = 0;
