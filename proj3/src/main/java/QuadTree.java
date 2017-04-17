@@ -107,7 +107,7 @@ public class QuadTree {
             }
         } 
         QTreeNode tempNode = x;
-        ArrayList<QTreeNode> tempList = new ArrayList<>()
+        ArrayList<QTreeNode> tempList = new ArrayList<>();
         //if (level == 0) {
             //ArrayList<QTreeNode> init = new ArrayList<>();
             //init.add(this.getRoot());
