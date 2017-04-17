@@ -1,4 +1,3 @@
-
 import java.util.ArrayList;
 
 public class QuadTree {
@@ -111,11 +110,11 @@ public class QuadTree {
         ArrayList<QTreeNode> tempList = new ArrayList<>();
         QTreeNode tempNode = x;
         // Vertical
-        if (level == 0) {
-            ArrayList<QTreeNode> initial = new ArrayList<>();
-            initial.add(this.getRoot());
-            return initial;
-        }
+        //if (level == 0) {
+            //ArrayList<QTreeNode> initial = new ArrayList<>();
+            //initial.add(this.getRoot());
+            //return initial;
+        //}
         while (tempNode != null) {
             if (tempNode.ULLAT > lrlat) {
                 tempList.add(tempNode);
