@@ -47,8 +47,6 @@ public class GraphBuildingHandler extends DefaultHandler {
             ("motorway", "trunk", "primary", "secondary", "tertiary", "unclassified",
                     "residential", "living_street", "motorway_link", "trunk_link", "primary_link",
                     "secondary_link", "tertiary_link"));
-    private String activeState = "";
-    private final GraphDB g;
 
     public GraphBuildingHandler(GraphDB g) {
         this.g = g;
