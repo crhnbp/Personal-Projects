@@ -1,7 +1,8 @@
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +33,16 @@ public class GraphBuildingHandler extends DefaultHandler {
      * roads, but in practice we walk all over them with such impunity that we forget cars can
      * actually drive on them.
      */
+    public String activeState = "";
+    private final GraphDB g;
+    public HashMap<Long, Node> nodeSet;
+    public HashMap<Long, ArrayList<Long>> wayMap;
+    public ArrayList<Long> refList;
+    public long nodeID = 0;
+    public long wayID = 0;
+    public boolean wayFlag = false;
+    public boolean hasName = false;
+    public String name;
     private static final Set<String> ALLOWED_HIGHWAY_TYPES = new HashSet<>(Arrays.asList
             ("motorway", "trunk", "primary", "secondary", "tertiary", "unclassified",
                     "residential", "living_street", "motorway_link", "trunk_link", "primary_link",
