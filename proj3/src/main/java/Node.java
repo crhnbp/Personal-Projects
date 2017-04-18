@@ -1,5 +1,7 @@
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Set;
+import java.util.HashSet;
 
 public class Node {
     long id;
@@ -102,7 +104,6 @@ public class Node {
         if (id != node.id) return false;
         if (Double.compare(node.latitude, latitude) != 0) return false;
         return Double.compare(node.longtitude, longtitude) == 0;
-        @Override
 
     }
 
