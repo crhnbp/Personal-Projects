@@ -50,6 +50,21 @@ public class GraphBuildingHandler extends DefaultHandler {
 
     public GraphBuildingHandler(GraphDB g) {
         this.g = g;
+        nodeSet = new HashMap<>();
+        wayMap = new HashMap<>();
+        refList = new ArrayList<>();
+        wayFlag = false;
+        System.out.println("new handler");
+        nodeID = 0;
+        wayID = 0;
+        name = null;
+    }
+
+    public HashMap<Long, Node> getNodeSet() {
+        return this.nodeSet;
+    }
+    public HashMap<Long, ArrayList<Long>> getWayMap() {
+        return this.wayMap;
     }
 
     /**

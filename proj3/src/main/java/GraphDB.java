@@ -33,7 +33,7 @@ public class GraphDB {
     public GraphDB(String dbPath) {
         graph = new HashMap<>();
         try {
-            File inputFile = new File(db_path);
+            File inputFile = new File(dbPath);
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
             GraphBuildingHandler graphhandler = new GraphBuildingHandler(this);
