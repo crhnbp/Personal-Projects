@@ -6,6 +6,8 @@ import java.util.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.Map;
 
 /**
  *  Parses OSM XML files using an XML SAX parser. Used to construct the graph of roads for
@@ -33,38 +35,18 @@ public class GraphBuildingHandler extends DefaultHandler {
      * roads, but in practice we walk all over them with such impunity that we forget cars can
      * actually drive on them.
      */
-    public String activeState = "";
-    private final GraphDB g;
-    public HashMap<Long, Node> nodeSet;
-    public HashMap<Long, ArrayList<Long>> wayMap;
-    public ArrayList<Long> refList;
-    public long nodeID = 0;
-    public long wayID = 0;
-    public boolean wayFlag = false;
-    public boolean hasName = false;
-    public String name;
     private static final Set<String> ALLOWED_HIGHWAY_TYPES = new HashSet<>(Arrays.asList
             ("motorway", "trunk", "primary", "secondary", "tertiary", "unclassified",
                     "residential", "living_street", "motorway_link", "trunk_link", "primary_link",
                     "secondary_link", "tertiary_link"));
+    private String activeState = "";
+    private final GraphDB g;
+    private Node n;
+    private ArrayList<Node> wayNodes;
+    private boolean allowedWay;
 
-    public GraphBuildingHandler(GraphDB g) {
+    public MapDBHandler(GraphDB g) {
         this.g = g;
-        nodeSet = new HashMap<>();
-        wayMap = new HashMap<>();
-        refList = new ArrayList<>();
-        wayFlag = false;
-        System.out.println("new handler");
-        nodeID = 0;
-        wayID = 0;
-        name = null;
-    }
-
-    public HashMap<Long, Node> getNodeSet() {
-        return this.nodeSet;
-    }
-    public HashMap<Long, ArrayList<Long>> getWayMap() {
-        return this.wayMap;
     }
 
     /**
@@ -84,40 +66,46 @@ public class GraphBuildingHandler extends DefaultHandler {
     @Override
     public void startElement(String uri, String localName, String qName, Attributes attributes)
             throws SAXException {
-        if (qName.equals("relation")) {
-            return;
-        }
-        long ref;
-        double lat = 0;
-        double lon = 0;
+        /* Some example code on how you might begin to parse XML files. */
+        Map<Long, Node> graph = g.getGraph();
         if (qName.equals("node")) {
             activeState = "node";
-            // Begin parsing here:
-            nodeID = Long.parseLong(attributes.getValue("id"));
-            lat = Double.parseDouble(attributes.getValue("lat"));
-            lon = Double.parseDouble(attributes.getValue("lon"));
-            name = null;
+            long nodeId = Long.parseLong(attributes.getValue("id"));
+            double lat = Double.parseDouble(attributes.getValue("lat"));
+            double lon = Double.parseDouble(attributes.getValue("lon"));
+            n = new Node(nodeId, lat, lon);
+            //System.out.println("put node in graph");
+            graph.put(nodeId, n);
+
         } else if (qName.equals("way")) {
             activeState = "way";
-            refList = new ArrayList<>();
-            // Pull out a list of the reference ID that the road connects to, if the type is one of the highway types;
-        } else if (activeState.equals("way") && qName.equals("nd")) { // We need these input as connection
-            ref = Long.parseLong(attributes.getValue("ref"));
-            refList.add(ref);
-        } else if (activeState.equals("way") && qName.equals("tag") && attributes.getValue("k")
-                .equals("highway")) {
-            String v = attributes.getValue("v");
+            allowedWay = false;
+            wayNodes = new ArrayList<>();
+            long wayId = Long.parseLong(attributes.getValue("id"));
+            //System.out.println("Beginning a way..." + wayId);
 
-        } else if (activeState.equals("node") && qName.equals("tag") && attributes.getValue("k")
-                .equals("name")) {
-            // There maybe more info for one node
-            name = attributes.getValue("v");
-            hasName = true;
+        } else if (activeState.equals("way")) {
+            if (qName.equals("nd")) { // CONNECT THESE NODES
+                long currId = Long.parseLong(attributes.getValue("ref"));
+                Node currNode = graph.get(currId);
+                wayNodes.add(currNode);
+
+            } else if (qName.equals("tag")) {
+                String k = attributes.getValue("k");
+                String v = attributes.getValue("v");
+                if (k.equals("highway") && ALLOWED_HIGHWAY_TYPES.contains(v)) {
+                    allowedWay = true;
+                }
+                //System.out.println("Tag with k=" + k + ", v=" + v + ".");
+            }
         }
-        if (qName.equals("node")) {
-            Node node = new Node(nodeID, lat, lon, name);
-            nodeSet.put(node.id, node);
-        }
+        /*else if (activeState.equals("node") && qName.equals("tag")) {
+            // DO WE NEED TO DO ANYTHING WITH THE TAGS AFTER A NODE???
+            if(attributes.getValue("k").equals("name")) {
+                //System.out.println("Node with name: " + attributes.getValue("v"));
+            }
+
+        }*/
     }
 
     /**
@@ -133,16 +121,24 @@ public class GraphBuildingHandler extends DefaultHandler {
      */
     @Override
     public void endElement(String uri, String localName, String qName) throws SAXException {
-        if (qName.equals("relation")) {
-            return;
+        if (qName.equals("way")) {
+            if (allowedWay) {
+                connectNodes(wayNodes);
+                //System.out.println("Finishing a way...");
+            } /*else {
+                //System.out.println("Finishing a invalid highway way...");
+            }*/
         }
-        if (qName.equals("node")) {
-            if (hasName) {
-                nodeSet.get(nodeID).name = name;
-                hasName = false;
+    }
+
+    private void connectNodes(ArrayList<Node> nodes) {
+        if (nodes.size() > 1) {      // only connects wayNodes if there are at least two
+            Node prevNode = nodes.get(0);
+            for (int i = 1; i < nodes.size(); i++) {
+                Node currNode = nodes.get(i);
+                currNode.connect(prevNode);
+                prevNode = currNode;
             }
-        } else if (qName.equals("way")) {
-            //
         }
     }
 
