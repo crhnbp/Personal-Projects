@@ -8,6 +8,9 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
 import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -58,6 +61,10 @@ public class GraphDB {
             e.printStackTrace();
         }
         clean();
+    }
+
+    public Map<Long, Node> getGraph() {
+        return graph;
     }
 
     /**
