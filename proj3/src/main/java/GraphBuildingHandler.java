@@ -45,7 +45,7 @@ public class GraphBuildingHandler extends DefaultHandler {
     private ArrayList<Node> wayNodes;
     private boolean allowedWay;
 
-    public MapDBHandler(GraphDB g) {
+    public GraphBuildingHandler(GraphDB g) {
         this.g = g;
     }
 
@@ -73,7 +73,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             long nodeId = Long.parseLong(attributes.getValue("id"));
             double lat = Double.parseDouble(attributes.getValue("lat"));
             double lon = Double.parseDouble(attributes.getValue("lon"));
-            n = new Node(nodeId, lat, lon);
+            n = new Node(nodeId, lat, lon, null);
             //System.out.println("put node in graph");
             graph.put(nodeId, n);
 
@@ -136,7 +136,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             Node prevNode = nodes.get(0);
             for (int i = 1; i < nodes.size(); i++) {
                 Node currNode = nodes.get(i);
-                currNode.connect(prevNode);
+                currNode.addNeighbor(prevNode);
                 prevNode = currNode;
             }
         }

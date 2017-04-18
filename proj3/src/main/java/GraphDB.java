@@ -39,28 +39,13 @@ public class GraphDB {
             File inputFile = new File(dbPath);
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            GraphBuildingHandler graphhandler = new GraphBuildingHandler(this);
-            saxParser.parse(inputFile, graphhandler);
-            // Get a TrieST of the nodes
-            TrieST trieTree = new TrieST(graphhandler.getNodeSet());
-
-
-
-            // Use these two sets of info to construct a graph.
-//            System.out.println(maphandler.getNodeSet().get((long) 286080658).getLat());
-            // We can do this in the connection class;
-//            System.out.println(maphandler.getWayMap().size());
-
-//            System.out.println("import size: " + maphandler.getWayMap().size());
-//            System.out.println(maphandler.getWayMap().get((long) 5149907));
-//            Connection connect = new Connection(maphandler.getNodeSet(), maphandler.getWayMap());
-//            // Then get a graph
-//            graph = connect.getGraph();
-
+            MapDBHandler maphandler = new MapDBHandler(this);
+            saxParser.parse(inputFile, maphandler);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
         }
         clean();
+
     }
 
     public Map<Long, Node> getGraph() {
