@@ -53,6 +53,17 @@ public class Node {
     public String getName() {
         return this.name;
     }
+
+    public long getID() {
+        return this.id;
+    }
+    
+    public double getEuclDistTo(Node n) {
+        double diff1 = this.getLat() - n.getLat();
+        double diff2 = this.getLon() - n.getLon();
+        return Math.sqrt(diff1 * diff1 + diff2 * diff2);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
