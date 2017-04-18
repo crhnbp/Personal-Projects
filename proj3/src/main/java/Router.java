@@ -75,7 +75,6 @@ public class Router {
         double startLon = stlon;
         double endLat = destlat;
         double endLon = destlon;
-        this.g = g;
         ArrayList<Node> startEndNodes = findStartEndNodes(g, startLon, startLat, endLon, endLat);
         Node startNode = startEndNodes.get(0);
         Node endNode = startEndNodes.get(1);
