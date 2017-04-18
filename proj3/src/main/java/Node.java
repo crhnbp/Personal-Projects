@@ -8,6 +8,8 @@ public class Node {
     ArrayList<Node> neighbors;
     ArrayList<Double> distances;
     public String name;
+    private boolean disconnected;
+    Set<Node> connectionSet;
 
     public Node(long id, double latitude, double longtitude, String name) {
         this.id = id;
@@ -16,6 +18,8 @@ public class Node {
         this.name = name;
         neighbors = new ArrayList<>();
         distances = new ArrayList<>();
+        connectionSet = new HashSet<>();
+        disconnected = true;
     }
 
     public boolean hasNeighbor() {
@@ -57,11 +61,35 @@ public class Node {
     public long getID() {
         return this.id;
     }
+
+    public boolean isDisconnected() {
+        return disconnected;
+    }
+
+    public Set<Node> getConnectionSet() {
+        return connectionSet;
+    }
     
     public double getEuclDistTo(Node n) {
         double diff1 = this.getLat() - n.getLat();
         double diff2 = this.getLon() - n.getLon();
         return Math.sqrt(diff1 * diff1 + diff2 * diff2);
+    }
+
+    public void setIsDisconnected() {
+        disconnected = false;
+    }
+    public void addToConnections(Node n) {
+        connectionSet.add(n);
+    }
+
+    public void connect(Node n) {
+        if (n != null) {
+            addToConnections(n);
+            setIsDisconnected();
+            n.addToConnections(this);
+            n.setIsDisconnected();
+        }
     }
 
     @Override
@@ -74,6 +102,7 @@ public class Node {
         if (id != node.id) return false;
         if (Double.compare(node.latitude, latitude) != 0) return false;
         return Double.compare(node.longtitude, longtitude) == 0;
+        @Override
 
     }
 
