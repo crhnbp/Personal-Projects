@@ -23,6 +23,9 @@ public class Router {
     /**
      * Return a LinkedList of <code>Node</code>s representing the shortest path from st to dest.
      */
+    private static LinkedList<Long> routeIDs;
+    private static GraphDB g;
+
     public static LinkedList<Long> findAndSetRoute(Map<String, Double> params) {
         double startLat = params.get("start_lat");
         double startLon = params.get("start_lon");
