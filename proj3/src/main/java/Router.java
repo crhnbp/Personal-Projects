@@ -26,27 +26,6 @@ public class Router {
     private static LinkedList<Long> routeIDs;
     private static GraphDB g;
 
-    public static LinkedList<Long> findAndSetRoute(Map<String, Double> params) {
-        double startLat = params.get("start_lat");
-        double startLon = params.get("start_lon");
-        double endLat = params.get("end_lat");
-        double endLon = params.get("end_lon");
-        ArrayList<Node> startEndNodes = findStartEndNodes(startLon, startLat, endLon, endLat);
-        Node startNode = startEndNodes.get(0);
-        Node endNode = startEndNodes.get(1);
-        HashMap<Node, Node> prev = performAStar(startNode, endNode);
-        routeIDs = new LinkedList<>();
-        Node currNode = endNode;
-        Node prevNode = prev.get(currNode);
-        while (!currNode.equals(startNode)) {
-            long id = currNode.getID();
-            routeIDs.addFirst(id);
-            currNode = prevNode;
-            prevNode = prev.get(currNode);
-        }
-        routeIDs.addFirst(currNode.getID());
-        return routeIDs;
-    }
 
     private static double getDist(Node n, double targetLon, double targetLat) {
         double diff1 = n.getLat() - targetLat;
@@ -92,7 +71,27 @@ public class Router {
     }
     
     public static LinkedList<Long> shortestPath(GraphDB g, double stlon, double stlat, double destlon, double destlat) {
-        return new LinkedList<Long>();
+        double startLat = stlat;
+        double startLon = stlon;
+        double endLat = destlat;
+        double endLon = destlon;
+        this.g = g;
+        ArrayList<Node> startEndNodes = findStartEndNodes(startLon, startLat, endLon, endLat);
+        Node startNode = startEndNodes.get(0);
+        Node endNode = startEndNodes.get(1);
+        HashMap<Node, Node> prev = performAStar(startNode, endNode);
+        routeIDs = new LinkedList<>();
+        Node currNode = endNode;
+        Node prevNode = prev.get(currNode);
+        while (!currNode.equals(startNode)) {
+            long id = currNode.getID();
+            routeIDs.addFirst(id);
+            currNode = prevNode;
+            prevNode = prev.get(currNode);
+        }
+        routeIDs.addFirst(currNode.getID());
+        return routeIDs;
+
     }
 
     private static HashMap<Node, Node> performAStar(Node startNode, Node endNode) {
