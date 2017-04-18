@@ -39,7 +39,7 @@ public class GraphDB {
             File inputFile = new File(dbPath);
             SAXParserFactory factory = SAXParserFactory.newInstance();
             SAXParser saxParser = factory.newSAXParser();
-            MapDBHandler maphandler = new MapDBHandler(this);
+            GraphBuildingHandler maphandler = new GraphBuildingHandler(this);
             saxParser.parse(inputFile, maphandler);
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
