@@ -1,26 +1,38 @@
 import org.xml.sax.SAXException;
-import java.util.ArrayList;
+import com.sun.org.apache.xml.internal.utils.Trie;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
+import java.util.ArrayList;
+import java.util.*;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
- * Wraps the parsing functionality of the MapDBHandler as an example.
- * You may choose to add to the functionality of this class if you wish.
- * @author Alan Yao
+ * Graph for storing all of the intersection (vertex) and road (edge) information.
+ * Uses your GraphBuildingHandler to convert the XML files into a graph. Your
+ * code must include the vertices, adjacent, distance, closest, lat, and lon
+ * methods. You'll also need to include instance variables and methods for
+ * modifying the graph (e.g. addNode and addEdge).
+ *
+ * @author Alan Yao, Josh Hug
  */
 public class GraphDB {
+    /** Your instance variables for storing the graph. You should consider
+     * creating helper classes, e.g. Node, Edge, etc. */
 
-    HashMap<Long, Node> graph;
     /**
      * Example constructor shows how to create and start an XML parser.
+     * You do not need to modify this constructor, but you're welcome to do so.
      * @param dbPath Path to the XML file to be parsed.
      */
+    public HashMap<Long, Node> graph;
+    public TrieST trieTree;
+
     public GraphDB(String dbPath) {
         graph = new HashMap<>();
         try {
@@ -35,9 +47,11 @@ public class GraphDB {
         clean();
 
     }
+
     public Map<Long, Node> getGraph() {
         return graph;
     }
+
     /**
      * Helper to process strings into their "cleaned" form, ignoring punctuation and capitalization.
      * @param s Input string.
@@ -45,6 +59,10 @@ public class GraphDB {
      */
     static String cleanString(String s) {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
+    }
+
+    public TrieST getTrieTree() {
+        return this.trieTree;
     }
 
     /**
@@ -57,7 +75,7 @@ public class GraphDB {
         while (iter.hasNext()) {
             Map.Entry<Long, Node> entry = iter.next();
             Node node = entry.getValue();
-            if (node.isDisconnected()) {
+            if (!node.isDisconnected()) {
                 iter.remove();
             }
         }
@@ -95,3 +113,5 @@ public class GraphDB {
     }
 }
 
+
+}

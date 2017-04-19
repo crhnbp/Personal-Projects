@@ -1,13 +1,13 @@
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import java.util.ArrayList;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.ArrayList;
 import java.util.Map;
-
 
 /**
  *  Parses OSM XML files using an XML SAX parser. Used to construct the graph of roads for
@@ -18,7 +18,15 @@ import java.util.Map;
  *  <a href="http://wiki.openstreetmap.org/wiki/Node">the node XML element</a>,
  *  and the java
  *  <a href="https://docs.oracle.com/javase/tutorial/jaxp/sax/parsing.html">SAX parser tutorial</a>.
- *  @author Alan Yao
+ *
+ *  You may find the CSCourseGraphDB and CSCourseGraphDBHandler examples useful.
+ *
+ *  The idea here is that some external library is going to walk through the XML
+ *  file, and your override method tells Java what to do every time it gets to the next
+ *  element in the file. This is a very common but strange-when-you-first-see it pattern.
+ *  It is similar to the Visitor pattern we discussed for graphs.
+ *
+ *  @author Alan Yao, Maurice Lee
  */
 public class GraphBuildingHandler extends DefaultHandler {
     /**
@@ -133,4 +141,5 @@ public class GraphBuildingHandler extends DefaultHandler {
             }
         }
     }
+
 }
