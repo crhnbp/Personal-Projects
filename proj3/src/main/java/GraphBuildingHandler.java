@@ -136,7 +136,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             Node prevNode = nodes.get(0);
             for (int i = 1; i < nodes.size(); i++) {
                 Node currNode = nodes.get(i);
-                currNode.addNeighbor(prevNode);
+                currNode.connect(prevNode);
                 prevNode = currNode;
             }
         }

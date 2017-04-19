@@ -111,7 +111,7 @@ public class Router {
             if (v.equals(endNode)) {
                 break;
             }
-            ArrayList<Node> children = v.getNeighbors();
+            Set<Node> children = v.getConnectionSet();
             for (Node child: children) {
                 double edge = v.getEuclDistTo(child);
                 if (!dist.containsKey(child) || dist.get(child) >= dist.get(v) + edge) {
