@@ -1,4 +1,4 @@
-import org.xml.sax.Attributes;
+HashMap<Long, Node>import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 import java.lang.reflect.Array;
@@ -87,8 +87,8 @@ public class GraphBuildingHandler extends DefaultHandler {
         } else if (activeState.equals("way")) {
             if (qName.equals("nd")) { // CONNECT THESE NODES
                 long currId = Long.parseLong(attributes.getValue("ref"));
-                Node currNode = graph.get(currId);
-                wayNodes.add(currNode);
+                Node curr = graph.get(currId);
+                wayNodes.add(curr);
 
             } else if (qName.equals("tag")) {
                 String k = attributes.getValue("k");
@@ -124,20 +124,17 @@ public class GraphBuildingHandler extends DefaultHandler {
         if (qName.equals("way")) {
             if (allowedWay) {
                 connectNodes(wayNodes);
-                //System.out.println("Finishing a way...");
-            } /*else {
-                //System.out.println("Finishing a invalid highway way...");
-            }*/
+            } 
         }
     }
 
     private void connectNodes(ArrayList<Node> nodes) {
         if (nodes.size() > 1) {      // only connects wayNodes if there are at least two
-            Node prevNode = nodes.get(0);
-            for (int i = 1; i < nodes.size(); i++) {
-                Node currNode = nodes.get(i);
-                currNode.connect(prevNode);
-                prevNode = currNode;
+            Node prev = nodes.get(0);
+            for (int i = 1; i < nodes.size(); i += 1) {
+                Node curr = nodes.get(i);
+                curr.addNeighbor(prev);
+                prev = curr;
             }
         }
     }
