@@ -87,6 +87,9 @@ public class Router {
             long id = currNode.getID();
             route.addFirst(id);
             currNode = prevNode;
+            if (currNode == null) {
+                break;
+            }
             prevNode = map.get(currNode);
         }
         route.addFirst(currNode.getID());
