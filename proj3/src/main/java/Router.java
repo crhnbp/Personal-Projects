@@ -33,7 +33,7 @@ public class Router {
         return Math.sqrt(diff1 * diff1 + diff2 * diff2);
     }
 
-    private static ArrayList<Node> findStartEndNodes(double slon, double slat,
+    private static ArrayList<Node> findStartEndNodes(GraphDB g, double slon, double slat,
                                                      double elon, double elat) {
         ArrayList<Node> arr = new ArrayList<>();
         Map<Long, Node> graph = g.getGraph();
@@ -75,7 +75,7 @@ public class Router {
         double startLon = stlon;
         double endLat = destlat;
         double endLon = destlon;
-        ArrayList<Node> startEndNodes = findStartEndNodes(startLon, startLat, endLon, endLat);
+        ArrayList<Node> startEndNodes = findStartEndNodes(g, startLon, startLat, endLon, endLat);
         Node startNode = startEndNodes.get(0);
         Node endNode = startEndNodes.get(1);
         HashMap<Node, Node> prev = performAStar(startNode, endNode);
