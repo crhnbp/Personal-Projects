@@ -62,4 +62,36 @@ public class GraphDB {
             }
         }
     }
+
+    Iterable<Long> vertices() {
+        //YOUR CODE HERE, this currently returns only an empty list.
+        return new ArrayList<Long>();
+    }
+
+    /** Returns ids of all vertices adjacent to v. */
+    Iterable<Long> adjacent(long v) {
+        return null;
+    }
+
+    /** Returns the Euclidean distance between vertices v and w, where Euclidean distance
+     *  is defined as sqrt( (lonV - lonV)^2 + (latV - latV)^2 ). */
+    double distance(long v, long w) {
+        return 0;
+    }
+
+    /** Returns the vertex id closest to the given longitude and latitude. */
+    long closest(double lon, double lat) {
+        return 0;
+    }
+
+    /** Longitude of vertex v. */
+    double lon(long v) {
+        return 0;
+    }
+
+    /** Latitude of vertex v. */
+    double lat(long v) {
+        return 0;
+    }
+}
 }

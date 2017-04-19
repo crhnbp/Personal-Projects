@@ -65,7 +65,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             long nodeId = Long.parseLong(attributes.getValue("id"));
             double lat = Double.parseDouble(attributes.getValue("lat"));
             double lon = Double.parseDouble(attributes.getValue("lon"));
-            n = new Node(nodeId, lat, lon);
+            n = new Node(nodeId, lat, lon, null);
             //System.out.println("put node in graph");
             graph.put(nodeId, n);
 
