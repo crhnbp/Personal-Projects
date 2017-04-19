@@ -77,10 +77,13 @@ public class Router {
         double endLon = destlon;
         ArrayList<Node> startEndNodes = findStartEndNodes(g, startLon, startLat, endLon, endLat);
         Node startNode = startEndNodes.get(0);
+        System.out.println(startNode.getID());
         Node endNode = startEndNodes.get(1);
         HashMap<Node, Node> prev = performAStar(startNode, endNode);
         routeIDs = new LinkedList<>();
         Node currNode = endNode;
+        System.out.println(currNode.getID());
+
         Node prevNode = prev.get(currNode);
         while (!currNode.equals(startNode)) {
             long id = currNode.getID();
