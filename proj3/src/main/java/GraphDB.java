@@ -111,6 +111,16 @@ public class GraphDB {
     double lat(long v) {
         return 0;
     }
+
+    @Override 
+    String toString() {
+        String nodes = "";
+        for (Entry e : graph.entrySet()) {
+            nodes += (new Long(e.getValue().getID())).toString() + "\n";
+        }
+        return nodes;
+    } 
+
 }
 
 
