@@ -23,7 +23,7 @@ public class Router {
     /**
      * Return a LinkedList of <code>Node</code>s representing the shortest path from st to dest.
      */
-    private static LinkedList<Long> routeIDs;
+    private static LinkedList<Long> route;
     private static GraphDB g;
 
 
@@ -33,41 +33,39 @@ public class Router {
         return Math.sqrt(diff1 * diff1 + diff2 * diff2);
     }
 
-    private static ArrayList<Node> findStartEndNodes(GraphDB g, double slon, double slat,
+    private static ArrayList<Node> startEnd(GraphDB g, double slon, double slat,
                                                      double elon, double elat) {
-        ArrayList<Node> arr = new ArrayList<>();
-        Map<Long, Node> graph = g.getGraph();
-        Node startNode = null;
-        Node endNode = null;
+        ArrayList<Node> x = new ArrayList<>();
+        Node start = null;
+        Node end = null;
         double startDist = 0;
         double endDist = 0;
+        Map<Long, Node> graph = g.getGraph();
         Iterator<Map.Entry<Long, Node>> iter = graph.entrySet().iterator();
         if (iter.hasNext()) {
             Map.Entry<Long, Node> entry = iter.next();
-            startNode = entry.getValue();
-            endNode = entry.getValue();
-            startDist = getDist(startNode, slon, slat);
-            endDist = getDist(endNode, elon, elat);
+            start = entry.getValue();
+            end = entry.getValue();
+            startDist = getDist(start, slon, slat);
+            endDist = getDist(end, elon, elat);
         }
         while (iter.hasNext()) {
             Map.Entry<Long, Node> entry = iter.next();
-
-            Node temp = entry.getValue();
-
-            double tempDistToStart = getDist(temp, slon, slat);
-            double tempDistToEnd = getDist(temp, elon, elat);
-            if (tempDistToStart < startDist) {
-                startDist = tempDistToStart;
-                startNode = temp;
+            Node y = entry.getValue();
+            double yDistToStart = getDist(y, slon, slat);
+            double yDistToEnd = getDist(y, elon, elat);
+            if (yDistToStart < startDist) {
+                startDist = yDistToStart;
+                start = y;
             }
-            if (tempDistToEnd < endDist) {
-                endDist = tempDistToEnd;
-                endNode = temp;
+            if (yDistToEnd < endDist) {
+                endDist = yDistToEnd;
+                end = y;
             }
         }
-        arr.add(startNode);
-        arr.add(endNode);
-        return arr;
+        x.add(start);
+        x.add(end);
+        return x;
     }
     
     public static LinkedList<Long> shortestPath(GraphDB g, double stlon, double stlat, double destlon, double destlat) {
@@ -75,38 +73,38 @@ public class Router {
         double startLon = stlon;
         double endLat = destlat;
         double endLon = destlon;
-        ArrayList<Node> startEndNodes = findStartEndNodes(g, startLon, startLat, endLon, endLat);
+        ArrayList<Node> startEndNodes = startEnd(g, startLon, startLat, endLon, endLat);
         Node startNode = startEndNodes.get(0);
         System.out.println(startNode.getID());
         Node endNode = startEndNodes.get(1);
-        HashMap<Node, Node> prev = performAStar(startNode, endNode);
-        routeIDs = new LinkedList<>();
+        HashMap<Node, Node> map = astar(startNode, endNode);
+        route = new LinkedList<>();
         Node currNode = endNode;
         System.out.println(currNode.getID());
 
-        Node prevNode = prev.get(currNode);
+        Node prevNode = map.get(currNode);
         while (!currNode.equals(startNode)) {
             long id = currNode.getID();
-            routeIDs.addFirst(id);
+            route.addFirst(id);
             currNode = prevNode;
-            prevNode = prev.get(currNode);
+            prevNode = map.get(currNode);
         }
-        routeIDs.addFirst(currNode.getID());
-        return routeIDs;
+        route.addFirst(currNode.getID());
+        return route;
 
     }
 
-    private static HashMap<Node, Node> performAStar(Node startNode, Node endNode) {
-        HashSet<Node> visited = new HashSet<>();            // HashSet of nodes
-        HashMap<Node, Double> dist = new HashMap<>();       // HashMap of node to pathdist to node
-        HashMap<Node, Node> prev = new HashMap<>();         // HashMap of previous pointers
-        PriorityQueue<WrapperNode> fringe = new PriorityQueue<>(); // PQ comparing on dist + h(n)
-        WrapperNode wStartNode = new WrapperNode(startNode, endNode, 0.0);
-        fringe.add(wStartNode);
+    private static HashMap<Node, Node> astar(Node startNode, Node endNode) {
+        HashSet<Node> visited = new HashSet<>();
+        HashMap<Node, Node> map = new HashMap<>();             
+        HashMap<Node, Double> dist = new HashMap<>();      
+        PriorityQueue<WrapperNode> prio = new PriorityQueue<>(); 
+        WrapperNode wstart = new WrapperNode(startNode, endNode, 0.0);
+        prio.add(wstart);
         dist.put(startNode, 0.0);
-        while (!fringe.isEmpty()) {
-            WrapperNode wv = fringe.remove();
-            Node v = wv.getNode();
+        while (!prio.isEmpty()) {
+            WrapperNode z = prio.remove();
+            Node v = z.getNode();
             if (visited.contains(v)) {
                 continue;
             }
@@ -117,13 +115,13 @@ public class Router {
             Set<Node> children = v.getConnectionSet();
             for (Node child: children) {
                 double edge = v.getEuclDistTo(child);
-                if (!dist.containsKey(child) || dist.get(child) >= dist.get(v) + edge) {
-                    dist.put(child, dist.get(v) + edge);                       // update distance
-                    fringe.add(new WrapperNode(child, endNode, dist.get(child))); // update pqueue
-                    prev.put(child, v);                                    // update back pointers
+                if (dist.get(child) >= dist.get(v) + edge|| !dist.containsKey(child)) {
+                    dist.put(child, dist.get(v) + edge);                       
+                    prio.add(new WrapperNode(child, endNode, dist.get(child))); 
+                    map.put(child, v);                                    
                 }
             }
         }
-        return prev;
+        return map;
     }
 }
