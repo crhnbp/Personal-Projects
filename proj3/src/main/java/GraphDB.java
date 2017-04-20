@@ -75,7 +75,7 @@ public class GraphDB {
         while (iter.hasNext()) {
             Map.Entry<Long, Node> entry = iter.next();
             Node node = entry.getValue();
-            if (!node.hasNeighbor()) {
+            if (node.isDisconnected()) {
                 iter.remove();
             }
         }

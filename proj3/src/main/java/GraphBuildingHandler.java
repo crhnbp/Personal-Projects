@@ -73,7 +73,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             long nodeId = Long.parseLong(attributes.getValue("id"));
             double lat = Double.parseDouble(attributes.getValue("lat"));
             double lon = Double.parseDouble(attributes.getValue("lon"));
-            n = new Node(nodeId, lat, lon, null);
+            n = new Node(nodeId, lat, lon);
             //System.out.println("put node in graph");
             graph.put(nodeId, n);
 
@@ -133,7 +133,7 @@ public class GraphBuildingHandler extends DefaultHandler {
             Node prev = nodes.get(0);
             for (int i = 1; i < nodes.size(); i += 1) {
                 Node curr = nodes.get(i);
-                curr.addNeighbor(prev);
+                curr.connect(prev);
                 prev = curr;
             }
         }
