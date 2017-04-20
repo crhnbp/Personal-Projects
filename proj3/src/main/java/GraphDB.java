@@ -1,5 +1,4 @@
 import org.xml.sax.SAXException;
-import com.sun.org.apache.xml.internal.utils.Trie;
 
 import java.io.File;
 import java.io.IOException;
@@ -31,7 +30,6 @@ public class GraphDB {
      * @param dbPath Path to the XML file to be parsed.
      */
     public HashMap<Long, Node> graph;
-    public TrieST trieTree;
 
     public GraphDB(String dbPath) {
         graph = new HashMap<>();
@@ -61,9 +59,6 @@ public class GraphDB {
         return s.replaceAll("[^a-zA-Z ]", "").toLowerCase();
     }
 
-    public TrieST getTrieTree() {
-        return this.trieTree;
-    }
 
     /**
      *  Remove nodes with no connections from the graph.
