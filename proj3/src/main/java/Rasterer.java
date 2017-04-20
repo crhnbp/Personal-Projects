@@ -62,8 +62,8 @@ public class Rasterer {
         double windowHeight = params.get("h");
         double queryDistancePerPixel = (lrlon - ullon) / windowWidth;
         ArrayList<QuadTree.QTreeNode> list = 
-        mapTree.findBox(mapTree.getRoot(),
-         ullat, ullon, lrlat, lrlon, queryDistancePerPixel);
+            mapTree.findBox(mapTree.getRoot(),
+            ullat, ullon, lrlat, lrlon, queryDistancePerPixel);
         int row = mapTree.getRow();
         int col = mapTree.getCol();
         int a = 0;
