@@ -70,17 +70,17 @@ public class Rasterer {
         double x = list.get(0).getULLAT();
         for (QuadTree.QTreeNode node : list) {
             if (node.getULLAT() == x) {
-        		a++;
-        	}
-        	
+                a++;
+            }
+            
         }
         String[][] ans = new String[list.size() / a][a];
         int count = 0;
         for (int i = 0; i < list.size() / a; i++) {
-        	for (int k = 0; k < a; k++) {
-        		ans[i][k] = list.get(count).getFileName();
-        		count += 1;
-        	}
+            for (int k = 0; k < a; k++) {
+                ans[i][k] = list.get(count).getFileName();
+                count += 1;
+            }
         }
         int level = 0;
         double tileDPP = 0.00034332275390625;
