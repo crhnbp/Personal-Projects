@@ -120,7 +120,7 @@ public class Router {
             Set<Node> children = v.getConnectionSet();
             for (Node child: children) {
                 double edge = v.getEuclDistTo(child);
-                if (dist.get(child) >= dist.get(v) + edge || !dist.containsKey(child) && dist.get(child) != null && dist.get(v) != null && edge != null) {
+                if (dist.get(child) >= dist.get(v) + edge || !dist.containsKey(child)) {
                     dist.put(child, dist.get(v) + edge);                       
                     prio.add(new WrapperNode(child, endNode, dist.get(child))); 
                     map.put(child, v);                                    
