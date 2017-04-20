@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Base64;
-import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Iterator;
 
@@ -24,7 +20,6 @@ public class Router {
      * Return a LinkedList of <code>Node</code>s representing the shortest path from st to dest.
      */
     private static LinkedList<Long> route;
-    private static GraphDB g;
 
 
     private static double getDist(Node n, double targetLon, double targetLat) {
@@ -36,10 +31,10 @@ public class Router {
     private static ArrayList<Node> startEnd(GraphDB g, double slon, double slat,
                                                      double elon, double elat) {
         ArrayList<Node> x = new ArrayList<>();
-        Node start = null;
-        Node end = null;
         double startDist = 0;
         double endDist = 0;
+        Node start = null;
+        Node end = null;
         Map<Long, Node> graph = g.getGraph();
         Iterator<Map.Entry<Long, Node>> iter = graph.entrySet().iterator();
         if (iter.hasNext()) {
@@ -68,7 +63,8 @@ public class Router {
         return x;
     }
     
-    public static LinkedList<Long> shortestPath(GraphDB g, double stlon, double stlat, double destlon, double destlat) {
+    public static LinkedList<Long> shortestPath(GraphDB g, double stlon,
+                                                 double stlat, double destlon, double destlat) {
         double startLat = stlat;
         double startLon = stlon;
         double endLat = destlat;
@@ -101,9 +97,9 @@ public class Router {
 
     private static HashMap<Node, Node> astar(Node startNode, Node endNode) {
         HashSet<Node> visited = new HashSet<>();
-        HashMap<Node, Node> map = new HashMap<>();             
-        HashMap<Node, Double> dist = new HashMap<>();      
-        PriorityQueue<WrapperNode> prio = new PriorityQueue<>(); 
+        HashMap<Node, Node> map = new HashMap<>();  
+        PriorityQueue<WrapperNode> prio = new PriorityQueue<>();            
+        HashMap<Node, Double> dist = new HashMap<>();
         WrapperNode wstart = new WrapperNode(startNode, endNode, 0.0);
         prio.add(wstart);
         dist.put(startNode, 0.0);
@@ -119,11 +115,11 @@ public class Router {
             }
             Set<Node> children = v.getConnectionSet();
             for (Node child: children) {
-                    double edge = v.getEuclDistTo(child);
-                    if (!dist.containsKey(child) || dist.get(child) >= dist.get(v) + edge) {
-                        dist.put(child, dist.get(v) + edge);                       
-                        prio.add(new WrapperNode(child, endNode, dist.get(child))); 
-                        map.put(child, v);                                    
+                double edge = v.getEuclDistTo(child);
+                if (!dist.containsKey(child) || dist.get(child) >= dist.get(v) + edge) {
+                    dist.put(child, dist.get(v) + edge);                       
+                    prio.add(new WrapperNode(child, endNode, dist.get(child))); 
+                    map.put(child, v);                                    
                 }
             }
         }

@@ -6,7 +6,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
-import java.util.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -29,7 +28,7 @@ public class GraphDB {
      * You do not need to modify this constructor, but you're welcome to do so.
      * @param dbPath Path to the XML file to be parsed.
      */
-    public HashMap<Long, Node> graph;
+    protected HashMap<Long, Node> graph;
 
     public GraphDB(String dbPath) {
         graph = new HashMap<>();

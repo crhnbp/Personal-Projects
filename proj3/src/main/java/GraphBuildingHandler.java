@@ -129,7 +129,7 @@ public class GraphBuildingHandler extends DefaultHandler {
     }
 
     private void connectNodes(ArrayList<Node> nodes) {
-        if (nodes.size() > 1) {      // only connects wayNodes if there are at least two
+        if (nodes.size() > 1) {
             Node prev = nodes.get(0);
             for (int i = 1; i < nodes.size(); i += 1) {
                 Node curr = nodes.get(i);
