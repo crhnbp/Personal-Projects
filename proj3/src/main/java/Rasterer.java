@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * not draw the output correctly.
  */
 public class Rasterer {
-	public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
+    public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
             ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
     public static final int TILE_SIZE = 256;
 
