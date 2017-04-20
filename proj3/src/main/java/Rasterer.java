@@ -1,10 +1,5 @@
 import java.util.HashMap;
 import java.util.Map;
-import java.awt.Graphics;
-import java.io.ByteArrayOutputStream;
-import java.nio.Buffer;
-import java.util.*;
-import java.io.File;
 
 /**
  * This class provides all code necessary to take a query box and produce
@@ -16,11 +11,7 @@ public class Rasterer {
 	public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
             ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
     public static final int TILE_SIZE = 256;
-    // Recommended: QuadTree instance variable. You'll need to make
-    //              your own QuadTree since there is no built-in quadtree in Java.
 
-    /** imgRoot is the name of the directory containing the images.
-     *  You may not actually need this for your class. */
     public Rasterer(String imgRoot) {
         // YOUR CODE HERE
     }
@@ -69,7 +60,9 @@ public class Rasterer {
         double windowWidth = params.get("w");
         double windowHeight = params.get("h");
         double queryDistancePerPixel = (lrlon - ullon) / windowWidth;
-        ArrayList<QuadTree.QTreeNode> list =  mapTree.findBox(mapTree.getRoot(), ullat, ullon, lrlat, lrlon, queryDistancePerPixel);
+        ArrayList<QuadTree.QTreeNode> list = 
+        mapTree.findBox(mapTree.getRoot(),
+         ullat, ullon, lrlat, lrlon, queryDistancePerPixel);
         int row = mapTree.getRow();
         int col = mapTree.getCol();
         int a = 0;
