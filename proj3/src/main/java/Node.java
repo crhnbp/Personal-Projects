@@ -1,67 +1,19 @@
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Set;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Node {
-    long id;
-    double latitude;
-    double longtitude;
-    ArrayList<Node> neighbors;
-    ArrayList<Double> distances;
-    public String name;
+    private long id;
+    private double lat;
+    private double lon;
     private boolean disconnected;
     Set<Node> connectionSet;
 
-    public Node(long id, double latitude, double longtitude, String name) {
+    public Node(long id, double lat, double lon) {
         this.id = id;
-        this.latitude = latitude;
-        this.longtitude = longtitude;
-        this.name = name;
-        neighbors = new ArrayList<>();
-        distances = new ArrayList<>();
+        this.lat = lat;
+        this.lon = lon;
         connectionSet = new HashSet<>();
         disconnected = true;
-    }
-
-    public boolean hasNeighbor() {
-        return neighbors.size() > 0;
-    }
-
-    public void addNeighbor(Node neighbor) {
-        if (this.id != neighbor.id) {
-            neighbors.add(neighbor);
-            distances.add(distance(this, neighbor));
-        }
-    }
-    public double distance(Node n1, Node n2) {
-        double vertical = Math.pow(n2.getLat() - n1.getLat(), 2);
-        double horizontal = Math.pow(n2.getLon() - n1.getLon(), 2);
-        return Math.pow(vertical + horizontal, 0.5);
-    }
-
-    public ArrayList<Node> getNeighbors() {
-        return this.neighbors;
-    }
-
-    public ArrayList<Double> getDistances() {
-        return this.distances;
-    }
-
-    public double getLat() {
-        return this.latitude;
-    }
-
-    public double getLon() {
-        return this.longtitude;
-    }
-    
-    public String getName() {
-        return this.name;
-    }
-
-    public long getID() {
-        return this.id;
     }
 
     public boolean isDisconnected() {
@@ -71,13 +23,21 @@ public class Node {
     public Set<Node> getConnectionSet() {
         return connectionSet;
     }
-    
+
+    public long getID() {
+        return id;
+    }
+    public double getLat() {
+        return lat;
+    }
+    public double getLon() {
+        return lon;
+    }
     public double getEuclDistTo(Node n) {
         double diff1 = this.getLat() - n.getLat();
         double diff2 = this.getLon() - n.getLon();
         return Math.sqrt(diff1 * diff1 + diff2 * diff2);
     }
-
     public void setIsDisconnected() {
         disconnected = false;
     }
@@ -96,15 +56,20 @@ public class Node {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof Node)) {
+            return false;
+        }
         Node node = (Node) o;
-
-        if (id != node.id) return false;
-        if (Double.compare(node.latitude, latitude) != 0) return false;
-        return Double.compare(node.longtitude, longtitude) == 0;
-
+        if (id != node.id) {
+            return false;
+        }
+        if (Double.compare(node.lat, lat) != 0) {
+            return false;
+        }
+        return Double.compare(node.lon, lon) == 0;
     }
 
     @Override
@@ -112,9 +77,9 @@ public class Node {
         int result;
         long temp;
         result = (int) (id ^ (id >>> 32));
-        temp = Double.doubleToLongBits(latitude);
+        temp = Double.doubleToLongBits(lat);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(longtitude);
+        temp = Double.doubleToLongBits(lon);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
