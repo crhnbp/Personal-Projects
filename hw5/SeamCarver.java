@@ -76,11 +76,11 @@ public class SeamCarver {
                 } else if (this.width == 1) {
                     energySaver[i][j] = energy(i, j) + energySaver[i - 1][j];
                 } else if (i - 1 >= 0 && i + 1 < width) {
-                    double upperLeft = energySaver[i - 1][j - 1];
-                    double upperMiddle = energySaver[i][j - 1];
-                    double upperRight = energySaver[i + 1][j - 1];
+                    double upperL = energySaver[i - 1][j - 1];
+                    double upperM = energySaver[i][j - 1];
+                    double upperR = energySaver[i + 1][j - 1];
                     energySaver[i][j] = energy(i, j) 
-                                      + Math.min(Math.min(upperLeft, upperMiddle), upperRight);
+                                      + Math.min(Math.min(upperL, upperM), upperR);
                 } else if (i == 0) {
                     energySaver[i][j] = energy(i, j) 
                         + Math.min(energySaver[i][j - 1], energySaver[i + 1][j - 1]);
@@ -109,14 +109,14 @@ public class SeamCarver {
                     path[i - 1] = index + 1;
                 }
             } else if (index > 0 && index <  width - 1) {
-                double upperMiddle = energySaver[index][i - 1];
-                double upperRight = energySaver[index + 1][i - 1];
-                double upperLeft = energySaver[index - 1][i - 1];
-                if (upperLeft == Math.min(upperLeft, Math.min(upperMiddle, upperRight))) {
+                double upperM = energySaver[index][i - 1];
+                double upperR = energySaver[index + 1][i - 1];
+                double upperL = energySaver[index - 1][i - 1];
+                if (upperL == Math.min(upperL, Math.min(upperM, upperR))) {
                     path[i - 1] = index - 1;
-                } else if (upperMiddle == Math.min(upperMiddle, Math.min(upperLeft, upperRight))) {
+                } else if (upperM == Math.min(upperM, Math.min(upperL, upperR))) {
                     path[i - 1] = index;
-                } else if (upperRight == Math.min(upperRight, Math.min(upperLeft, upperMiddle))) {
+                } else if (upperR == Math.min(upperR, Math.min(upperL, upperM))) {
                     path[i - 1] = index + 1;
                 }
             } else if (index == width - 1) {
